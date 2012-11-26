@@ -19,8 +19,8 @@ do
  do
   for i in `ls $dir_provider"/"$port"/"$y | sort -n`
   do
-   echo $r" "`sed -n 3,3p $dir_provider"/"$port"/"$y"/"$i`", "$i" -- "`sed -n 1,1p $dir_provider"/"$port"/"$y"/"$i` >> $target_m3u_i
-   echo $r" "`sed -n 3,3p $dir_provider"/"$port"/"$y"/"$i`", "$i" -- "`sed -n 1,1p $dir_provider"/"$port"/"$y"/"$i` >> $target_m3u_u
+   echo $r""`sed -n 3,3p $dir_provider"/"$port"/"$y"/"$i`", "$i" -- "`sed -n 1,1p $dir_provider"/"$port"/"$y"/"$i` >> $target_m3u_i
+   echo $r""`sed -n 3,3p $dir_provider"/"$port"/"$y"/"$i`", "$i" -- "`sed -n 1,1p $dir_provider"/"$port"/"$y"/"$i` >> $target_m3u_u
    echo ${x_i}$y.$i":"$port >> $target_m3u_i
    echo ${x_u}$y.$i":"$port >> $target_m3u_u
   done
@@ -41,8 +41,8 @@ do
   ip123=${ary[0]}"."${ary[1]}"."${ary[2]}
   ip4=${ary[3]}
   port=${ary[4]}
-  echo $r" "`sed -n 3,3p $dir_provider"/"$port"/"$ip123/$ip4`", "$ip4" -- "`sed -n 1,1p $dir_provider"/"$port"/"$ip123/$ip4` >> $target_m3u_i
-  echo $r" "`sed -n 3,3p $dir_provider"/"$port"/"$ip123/$ip4`", "$ip4" -- "`sed -n 1,1p $dir_provider"/"$port"/"$ip123/$ip4` >> $target_m3u_u
+  echo $r""`sed -n 3,3p $dir_provider"/"$port"/"$ip123/$ip4`", "$ip4" -- "`sed -n 1,1p $dir_provider"/"$port"/"$ip123/$ip4` >> $target_m3u_i
+  echo $r""`sed -n 3,3p $dir_provider"/"$port"/"$ip123/$ip4`", "$ip4" -- "`sed -n 1,1p $dir_provider"/"$port"/"$ip123/$ip4` >> $target_m3u_u
   echo ${x_i}$ip123"."$ip4":"$port >> $target_m3u_i
   echo ${x_u}$ip123"."$ip4":"$port >> $target_m3u_u
 
