@@ -34,14 +34,11 @@ for tp in tps:
 	lists = os.listdir(dir_list)
 	lists.sort()
 	for list in lists:
-		#print list
 		target_m3u = join("m3u", "iptv_" + provider + "_" + tp + "_" + list + ".m3u")
 		f_m3u = open(target_m3u, "w")
 		f_m3u.write(h)
 		for la in [x.strip() for x in open(join(dir_list,list), "r").readlines()]:
-			#print la
 			ary = la.split(".")
-			#print ary
 			ip123 = str(ary[0]) + "." + str(ary[1]) + "." + str(ary[2])
 			ip4 = str(ary[3])
 			port = str(ary[4])
@@ -49,3 +46,4 @@ for tp in tps:
 			s1 = [x.strip() for x in f1.readlines()]
 			f_m3u.write(str(r) + ", " + str(ip4) + " -- " + s1[0] + "\n")
 			f_m3u.write(str(p) + str(y) + "." + str(ip4) + ":" + str(port) + "\n")
+		f_m3u.close()
