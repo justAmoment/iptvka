@@ -2,26 +2,26 @@
 import os
 from os.path import join
 provider = "rtk"
-dir_provider="provider/" + provider
+dir_provider=join("provider", provider)
 dir_format = "format"
 dir_list = "list"
-h = open(dir_format + "/head", "r").read()
-r = open(dir_format + "/raw", "r").read()
+h = open(join(dir_format, "head"), "r").read()
+r = open(join(dir_format, "raw"), "r").read()
 tps = ["igmp", "udpxy"]
 for tp in tps:
-	p = open(dir_format + "/prefix_ip_" + tp, "r").read()
+	p = open(join(dir_format, "prefix_ip_" + tp), "r").read()
 
 	# Generate all lists
-	target_m3u = "m3u/py_iptv_" + provider + "_" + tp + "_all.m3u"
+	target_m3u = join("m3u", "iptv_" + provider + "_" + tp + "_all.m3u")
 	f_m3u = open(target_m3u, "w")
 	f_m3u.write(h)
 	ports = os.listdir(dir_provider)
 	ports.sort(key=int)
 	for port in ports:
-		yy = os.listdir(dir_provider + "/" + port)
+		yy = os.listdir(join(dir_provider, port))
 		yy.sort()
 		for y in yy:
-			ii = os.listdir(dir_provider + "/" + port + "/" + y)
+			ii = os.listdir(join(dir_provider, port, y))
 			ii.sort(key=int)
 			for i in ii:
 				f1 = open(join(dir_provider, port, y, i), "r")
@@ -35,7 +35,7 @@ for tp in tps:
 	lists.sort()
 	for list in lists:
 		#print list
-		target_m3u = "m3u/py_iptv_" + provider + "_" + tp + "_" + list + ".m3u"
+		target_m3u = join("m3u", "iptv_" + provider + "_" + tp + "_" + list + ".m3u")
 		f_m3u = open(target_m3u, "w")
 		f_m3u.write(h)
 		for la in [x.strip() for x in open(join(dir_list,list), "r").readlines()]:
