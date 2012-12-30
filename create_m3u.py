@@ -1,21 +1,23 @@
 #!/bin/python
 import os
+from os.path import join
 
-def inTags(ta, ip):
+def inTags(ta, ip, t_pre, t_post):
 	ret = ""
 	for z in ta:
 		if ip in ta[z]:
-			ret += " -- " + str(z)
+			ret += t_pre + str(z) + t_post
 	return ret
 
-from os.path import join
-provider = "rtk"
-dir_provider=join("provider", provider)
-dir_format = "format"
-dir_list = "list"
-dir_tag = "tag"
-h = open(join(dir_format, "head"), "r").read()
-r = open(join(dir_format, "raw"), "r").read()
+provider     = "rtk"
+dir_provider = join("provider", provider)
+dir_format   = "format"
+dir_list     = "list"
+dir_tag      = "tag"
+h      = open(join(dir_format, "head"),        "r").read()
+r      = open(join(dir_format, "raw"),         "r").read()
+t_pre  = open(join(dir_format, "tag_prefix"),  "r").read()
+t_post = open(join(dir_format, "tag_postfix"), "r").read()
 tps = ["igmp", "udpxy"]
 
 # Fill tag array
@@ -47,7 +49,7 @@ for tp in tps:
 				ip1234 = str(y) + "." + str(i)
 				f1 = open(join(dir_provider, port, y, i), "r")
 				s1 = [x.strip() for x in f1.readlines()]
-				f_m3u.write(str(r) + ", " + str(i) + " -- " + s1[0] + inTags(ta, ip1234) + "\n")
+				f_m3u.write(str(r) + ", " + str(i) + " -- " + s1[0] + inTags(ta, ip1234, t_pre, t_post) + "\n")
 				f_m3u.write(str(p) + str(ip1234) + ":" + str(port) + "\n")
 	f_m3u.close()
 
@@ -66,6 +68,6 @@ for tp in tps:
 			port = str(ary[4])
 			f1 = open(join(dir_provider, port, ip123, ip4), "r")
 			s1 = [x.strip() for x in f1.readlines()]
-			f_m3u.write(str(r) + ", " + str(ip4) + " -- " + s1[0] + inTags(ta, ip1234) + "\n")
+			f_m3u.write(str(r) + ", " + str(ip4) + " -- " + s1[0] + inTags(ta, ip1234, t_pre, t_post) + "\n")
 			f_m3u.write(str(p) + str(ip1234) + ":" + str(port) + "\n")
 		f_m3u.close()
