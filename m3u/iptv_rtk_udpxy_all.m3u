@@ -78,6 +78,7 @@ http://192.168.0.218:4022/udp/233.7.70.40:5000
 #EXTINF:-1, 41 -- ? Дети
 http://192.168.0.218:4022/udp/233.7.70.41:5000
 #EXTINF:-1, 42 -- Euronews
+#EXTVLCOPT:audio-track-id=2071
 http://192.168.0.218:4022/udp/233.7.70.42:5000
 #EXTINF:-1, 43 -- 2x2
 http://192.168.0.218:4022/udp/233.7.70.43:5000
@@ -112,6 +113,7 @@ http://192.168.0.218:4022/udp/233.7.70.57:5000
 #EXTINF:-1, 58 -- Мир
 http://192.168.0.218:4022/udp/233.7.70.58:5000
 #EXTINF:-1, 59 -- ? TVX ? TV1000 Action
+#EXTVLCOPT:audio-track-id=2078
 http://192.168.0.218:4022/udp/233.7.70.59:5000
 #EXTINF:-1, 60 -- 5
 http://192.168.0.218:4022/udp/233.7.70.60:5000
@@ -149,26 +151,28 @@ http://192.168.0.218:4022/udp/233.7.70.75:5000
 http://192.168.0.218:4022/udp/233.7.70.76:5000
 #EXTINF:-1, 77 -- 1 Время
 http://192.168.0.218:4022/udp/233.7.70.77:5000
-#EXTINF:-1, 78 -- ? mpeg2 ? Боец
-http://192.168.0.218:4022/udp/233.7.70.78:5000
-#EXTINF:-1, 79 -- ? mpeg2 ? Авто+
-http://192.168.0.218:4022/udp/233.7.70.79:5000
-#EXTINF:-1, 80 -- ? mpeg2 ? Комедия
-http://192.168.0.218:4022/udp/233.7.70.80:5000
+#EXTINF:-1, 78 -- Боец {mpeg2 10sec}
+#EXTVLCOPT:network-caching=10000
+http/ffmpeg://192.168.0.218:4022/udp/233.7.70.78:5000
+#EXTINF:-1, 79 -- Авто+ {mpeg2 10sec}
+#EXTVLCOPT:network-caching=10000
+http/ffmpeg://192.168.0.218:4022/udp/233.7.70.79:5000
+#EXTINF:-1, 80 -- Комедия {mpeg2 10sec}
+#EXTVLCOPT:network-caching=10000
+http/ffmpeg://192.168.0.218:4022/udp/233.7.70.80:5000
 #EXTINF:-1, 81 -- Euro Sport 2 {fav1} {sport}
 http://192.168.0.218:4022/udp/233.7.70.81:5000
 #EXTINF:-1, 82 -- Russia Today
 http://192.168.0.218:4022/udp/233.7.70.82:5000
 #EXTINF:-1, 83 -- RU.TV
 http://192.168.0.218:4022/udp/233.7.70.83:5000
-#EXTINF:-1, 84 -- ? mpeg2 ? SyFy {fav1}
-http://192.168.0.218:4022/udp/233.7.70.84:5000
+#EXTINF:-1, 84 -- SyFy {fav1} {mpeg2 10sec}
+#EXTVLCOPT:network-caching=10000
+http/ffmpeg://192.168.0.218:4022/udp/233.7.70.84:5000
 #EXTINF:-1, 85 -- Fox Life
 http://192.168.0.218:4022/udp/233.7.70.85:5000
 #EXTINF:-1, 86 -- Феникс+Кино {cinema}
 http://192.168.0.218:4022/udp/233.7.70.86:5000
-#EXTINF:-1, 87 -- !! absent !! Travel
-http://192.168.0.218:4022/udp/233.7.70.87:5000
 #EXTINF:-1, 88 -- History
 http://192.168.0.218:4022/udp/233.7.70.88:5000
 #EXTINF:-1, 89 -- ? E
@@ -222,24 +226,35 @@ http://192.168.0.218:4022/udp/233.7.70.116:5000
 #EXTINF:-1, 124 -- 2x2
 http://192.168.0.218:4022/udp/233.7.70.124:5000
 #EXTINF:-1, 125 -- Mezzo Live HD {HD}
+#EXTVLCOPT:network-caching=3000
 http://192.168.0.218:4022/udp/233.7.70.125:5000
-#EXTINF:-1, 126 -- Sony {fav1} {HD} {cinema}
+#EXTINF:-1, 126 -- Sony {HD} {cinema} {fav1}
+#EXTVLCOPT:network-caching=3000
 http://192.168.0.218:4022/udp/233.7.70.126:5000
-#EXTINF:-1, 127 -- Fox HD {fav1} {HD} {cinema}
+#EXTINF:-1, 127 -- Fox HD {HD} {cinema} {fav1}
+#EXTVLCOPT:network-caching=3000
 http://192.168.0.218:4022/udp/233.7.70.127:5000
 #EXTINF:-1, 128 -- TV1000 Megahit HD {HD}
+#EXTVLCOPT:network-caching=3000
 http://192.168.0.218:4022/udp/233.7.70.128:5000
 #EXTINF:-1, 129 -- TV1000 Premium HD {HD}
+#EXTVLCOPT:network-caching=3000
 http://192.168.0.218:4022/udp/233.7.70.129:5000
 #EXTINF:-1, 130 -- TV1000 Comedy HD {HD}
+#EXTVLCOPT:network-caching=3000
 http://192.168.0.218:4022/udp/233.7.70.130:5000
 #EXTINF:-1, 131 -- Спорт 1 HD {HD}
+#EXTVLCOPT:network-caching=3000
 http://192.168.0.218:4022/udp/233.7.70.131:5000
-#EXTINF:-1, 132 -- Euro Sport HD {sport} {HD}
+#EXTINF:-1, 132 -- Euro Sport HD {HD} {sport}
+#EXTVLCOPT:audio-track-id=2078
+#EXTVLCOPT:network-caching=3000
 http://192.168.0.218:4022/udp/233.7.70.132:5000
 #EXTINF:-1, 133 -- Nat Geo Wild HD {HD}
+#EXTVLCOPT:network-caching=3000
 http://192.168.0.218:4022/udp/233.7.70.133:5000
 #EXTINF:-1, 134 -- ? Nature HD ? History HD {HD}
+#EXTVLCOPT:network-caching=3000
 http://192.168.0.218:4022/udp/233.7.70.134:5000
 #EXTINF:-1, 138 -- Viasat Sport {sport}
 http://192.168.0.218:4022/udp/233.7.70.138:5000
@@ -277,11 +292,12 @@ http://192.168.0.218:4022/udp/233.7.70.155:5000
 http://192.168.0.218:4022/udp/233.7.70.156:5000
 #EXTINF:-1, 157 -- HD Life {HD}
 http://192.168.0.218:4022/udp/233.7.70.157:5000
-#EXTINF:-1, 158 -- Fox Life HD {fav1} {HD}
+#EXTINF:-1, 158 -- Fox Life HD {HD} {fav1}
 http://192.168.0.218:4022/udp/233.7.70.158:5000
 #EXTINF:-1, 159 -- National Geographic HD {HD}
 http://192.168.0.218:4022/udp/233.7.70.159:5000
 #EXTINF:-1, 160 -- myZen.tv HD {HD}
+#EXTVLCOPT:audio-track-id=2077
 http://192.168.0.218:4022/udp/233.7.70.160:5000
 #EXTINF:-1, 161 -- MTV Live HD {HD}
 http://192.168.0.218:4022/udp/233.7.70.161:5000
