@@ -61,7 +61,7 @@ for tp in tps:
 				# add #EXTINF:
 				zx = provider + "." + port + "." + ip1234
 				ma[zx] = []
-				ma[zx] = str(r[0]) + ", " + str(i) + " -- " + s1[0] + inTags(tl, ta, ip1234, t_pre, t_post) + "\n"
+				ma[zx] = str(r[0]) + ", " + str(i) + " -- " + s1[0] + inTags(tl, ta, zx, t_pre, t_post) + "\n"
 				# add #EXTVLCOPT:
 				if (len(r) > 1) and s1[1]:
 					for x in s1[1].split():
