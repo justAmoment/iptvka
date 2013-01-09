@@ -27,7 +27,7 @@ http://192.168.0.218:4022/udp/233.7.70.132:5000
 #EXTINF:-1, 133 -- Nat Geo Wild HD {HD}
 #EXTVLCOPT:network-caching=3000
 http://192.168.0.218:4022/udp/233.7.70.133:5000
-#EXTINF:-1, 134 -- ? Nature HD ? History HD {HD}
+#EXTINF:-1, 134 -- Nature HD {HD}
 #EXTVLCOPT:network-caching=3000
 http://192.168.0.218:4022/udp/233.7.70.134:5000
 #EXTINF:-1, 156 -- Travel+adventure {HD}
@@ -49,7 +49,8 @@ http://192.168.0.218:4022/udp/233.7.70.162:5000
 http://192.168.0.218:4022/udp/233.7.70.163:5000
 #EXTINF:-1, 164 -- Nickelodeon HD {HD}
 http://192.168.0.218:4022/udp/233.7.70.164:5000
-#EXTINF:-1, 198 -- Россия HD
+#EXTINF:-1, 198 -- Россия HD {HD}
+#EXTVLCOPT:network-caching=3000
 http://192.168.0.218:4022/udp/233.7.70.198:5000
 #EXTINF:-1, 225 -- Animal Planet HD {HD}
 http://192.168.0.218:4022/udp/233.7.70.225:5000
