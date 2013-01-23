@@ -17,7 +17,7 @@ http://192.168.0.218:4022/udp/233.7.70.129:5000
 #EXTINF:-1, 130 -- TV1000 Comedy HD {HD}
 #EXTVLCOPT:network-caching=3000
 http://192.168.0.218:4022/udp/233.7.70.130:5000
-#EXTINF:-1, 131 -- Спорт 1 HD {HD}
+#EXTINF:-1, 131 -- Спорт 1 HD {HD} {sport}
 #EXTVLCOPT:network-caching=3000
 http://192.168.0.218:4022/udp/233.7.70.131:5000
 #EXTINF:-1, 132 -- Euro Sport HD {HD} {sport}
