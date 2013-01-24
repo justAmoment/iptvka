@@ -121,5 +121,6 @@ class iptvkaWindow(Gtk.Window):
         abtd.set_authors(["justAmoment"])
         abtd.set_website("https://github.com/justAmoment/iptvka")
         abtd.set_website_label("https://github.com/justAmoment/iptvka")
+        abtd.set_transient_for(self)
         abtd.run()
         abtd.hide()
