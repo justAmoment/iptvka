@@ -93,7 +93,7 @@ class iptvkaWindow(Gtk.Window):
         action_group.add_action(action_docum)
 
         action_about = Gtk.Action("About", None, None, Gtk.STOCK_ABOUT)
-        action_about.connect("activate", self.on_menu_def)
+        action_about.connect("activate", self.on_menu_about)
         action_group.add_action(action_about)
 
 
@@ -113,3 +113,13 @@ class iptvkaWindow(Gtk.Window):
 
     def on_menu_filequit(self, widget):
         Gtk.main_quit()
+
+    def on_menu_about(self, widget):
+        abtd = Gtk.AboutDialog()
+        abtd.set_version("version 0.1")
+        abtd.set_program_name("iptvka")
+        abtd.set_authors(["justAmoment"])
+        abtd.set_website("https://github.com/justAmoment/iptvka")
+        abtd.set_website_label("https://github.com/justAmoment/iptvka")
+        abtd.run()
+        abtd.hide()
