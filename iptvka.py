@@ -1,10 +1,10 @@
 #!/bin/python
 
 from gi.repository import Gtk, Gdk
-import iptvka_gui
+from iptvka_gui import iptvkaWindow
 
 
-window = iptvka_gui.iptvkaWindow()
+window = iptvkaWindow()
 window.connect("delete-event", Gtk.main_quit)
 window.show_all()
 
