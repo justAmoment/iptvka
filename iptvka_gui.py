@@ -23,8 +23,12 @@ UI_INFO = """
     </menu>
   </menubar>
   <toolbar name='ToolBar'>
-    <toolitem action='a1' />
-    <toolitem action='a2' />
+    <toolitem action='FileRefresh' />
+    <separator />
+    <toolitem action='CreateAllM3U' />
+    <separator />
+    <toolitem action='Docum' />
+    <toolitem action='About' />
   </toolbar>
 </ui>
 """
@@ -119,6 +123,7 @@ class iptvkaWindow(Gtk.Window):
         abtd.set_version("version 0.1")
         abtd.set_program_name("iptvka")
         abtd.set_authors(["justAmoment"])
+        abtd.set_comments("This program generate m3u playlists for iptv.")
         abtd.set_website("https://github.com/justAmoment/iptvka")
         abtd.set_website_label("https://github.com/justAmoment/iptvka")
         abtd.set_transient_for(self)
