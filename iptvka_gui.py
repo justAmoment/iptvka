@@ -55,6 +55,24 @@ class iptvkaWindow(Gtk.Window):
 
         toolbar = uimanager.get_widget("/ToolBar")
         box.pack_start(toolbar, False, False, 0)
+        
+        lsts = Gtk.ListStore(str, str, str, str)
+        treeview = Gtk.TreeView(model=lsts)
+        for x_raw in range(2):
+            lsts.append(["rtk", "", "", ""])
+
+        x_title = ["provider", "ip", "port", "name"]
+
+        for x_col in range(len(x_title)):
+            column_text = Gtk.TreeViewColumn(x_title[x_col], Gtk.CellRendererText(), text=x_col)
+            treeview.append_column(column_text)
+            print x_col, x_title[x_col]
+
+        #renderer_pixbuf = Gtk.CellRendererPixbuf()
+        #column_pixbuf = Gtk.TreeViewColumn("Image", renderer_pixbuf, stock_id=1)
+        #treeview.append_column(column_pixbuf)
+        
+        box.pack_start(treeview, False, False, 0)
 
         #eventbox = Gtk.EventBox()
         #eventbox.connect("button-press-event", self.on_button_press_event)
