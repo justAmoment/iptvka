@@ -34,7 +34,9 @@ UI_INFO = """
 """
 
 class iptvkaWindow(Gtk.Window):
-    def __init__(self):
+    dir_from = "."
+    def __init__(self, dir_from = "."):
+        self.dir_from = dir_from
         Gtk.Window.__init__(self, title="iptvka")
 
         self.set_default_size(750, 550)
