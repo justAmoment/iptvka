@@ -1,6 +1,8 @@
 #!/bin/python
 
 from gi.repository import Gtk, Gdk
+import os
+from os.path import join
 
 UI_INFO = """
 <ui>
@@ -35,6 +37,8 @@ UI_INFO = """
 
 class iptvkaWindow(Gtk.Window):
     dir_from = "."
+    lsts = Gtk.ListStore(str, str, str, str)
+    treeview = Gtk.TreeView(model=lsts)
     def __init__(self, dir_from = "."):
         self.dir_from = dir_from
         Gtk.Window.__init__(self, title="iptvka")
@@ -58,32 +62,29 @@ class iptvkaWindow(Gtk.Window):
         toolbar = uimanager.get_widget("/ToolBar")
         box.pack_start(toolbar, False, False, 0)
         
-        lsts = Gtk.ListStore(str, str, str, str)
-        treeview = Gtk.TreeView(model=lsts)
-        for x_raw in range(2):
-            lsts.append(["rtk", "", "", ""])
-
         x_title = ["provider", "ip", "port", "name"]
 
         for x_col in range(len(x_title)):
             column_text = Gtk.TreeViewColumn(x_title[x_col], Gtk.CellRendererText(), text=x_col)
-            treeview.append_column(column_text)
+            self.treeview.append_column(column_text)
             print x_col, x_title[x_col]
+        
+        self.reload_ip_from_dir()
 
         #renderer_pixbuf = Gtk.CellRendererPixbuf()
         #column_pixbuf = Gtk.TreeViewColumn("Image", renderer_pixbuf, stock_id=1)
         #treeview.append_column(column_pixbuf)
         
-        box.pack_start(treeview, False, False, 0)
+        box.pack_start(self.treeview, False, False, 0)
 
         #eventbox = Gtk.EventBox()
         #eventbox.connect("button-press-event", self.on_button_press_event)
         #box.pack_start(eventbox, True, True, 0)
 
-        label = Gtk.Label("Right-click to see the popup menu.")
+        #label = Gtk.Label("Right-click to see the popup menu.")
         #eventbox.add(label)
 
-        self.popup = uimanager.get_widget("/PopupMenu")
+        #self.popup = uimanager.get_widget("/PopupMenu")
 
         self.add(box)
 
@@ -93,7 +94,7 @@ class iptvkaWindow(Gtk.Window):
         action_group.add_action(action_filemenu)
 
         action_filerefresh = Gtk.Action("FileRefresh", None, None, Gtk.STOCK_REFRESH)
-        action_filerefresh.connect("activate", self.on_menu_def)
+        action_filerefresh.connect("activate", self.on_menu_filerefresh)
         action_group.add_action(action_filerefresh)
 
         action_filequit = Gtk.Action("FileQuit", None, None, Gtk.STOCK_QUIT)
@@ -149,3 +150,42 @@ class iptvkaWindow(Gtk.Window):
         abtd.set_transient_for(self)
         abtd.run()
         abtd.hide()
+
+    def on_menu_filerefresh(self, widget):
+        self.reload_ip_from_dir()
+
+    def reload_ip_from_dir(self):
+        dir_prov = "provider"
+        dir_format = "format"
+        #dir_list = "list"
+        #dir_tag = "tag"
+        need_n_lines = 3
+        h      = open(join(dir_format, "head"),        "r").read()
+        t_pre  = open(join(dir_format, "tag_prefix"),  "r").read()
+        t_post = open(join(dir_format, "tag_postfix"), "r").read()
+        provs = os.listdir(join(self.dir_from, dir_prov))
+        provs.sort()
+        for prov in provs:
+            print "=", prov
+            ports = os.listdir(join(self.dir_from, dir_prov, prov))
+            ports.sort(key=int)
+            for port in ports:
+                print "=", port
+                yy = os.listdir(join(self.dir_from, dir_prov, prov, port))
+                yy.sort()
+                print yy
+                for y in yy:
+                    print "==", y
+                    ii = os.listdir(join(self.dir_from, dir_prov, prov, port, y))
+                    ii.sort(key=int)
+                    print ii
+                    for i in ii:
+                        ip1234 = str(y) + "." + str(i)
+                        print ip1234
+                        
+                        f1 = open(join(self.dir_from, dir_prov, prov, port, y, i), "r")
+                        s1 = [x.strip() for x in f1.readlines()]
+                        if len(s1) < need_n_lines:
+                            for x in range(len(s1), need_n_lines):
+                                s1.append("")
+                        self.lsts.append([prov, ip1234, port, s1[0]])
