@@ -9,6 +9,8 @@ UI_INFO = """
   <menubar name='MenuBar'>
     <menu action='FileMenu'>
       <menuitem action='FileRefresh' />
+      <menuitem action='FileClear' />
+      <separator />
       <menuitem action='FileSave' />
       <separator />
       <menuitem action='FileQuit' />
@@ -27,6 +29,7 @@ UI_INFO = """
   </menubar>
   <toolbar name='ToolBar'>
     <toolitem action='FileRefresh' />
+    <toolitem action='FileClear' />
     <separator />
     <toolitem action='FileSave' />
     <separator />
@@ -40,17 +43,19 @@ UI_INFO = """
 
 class iptvkaWindow(Gtk.Window):
     dir_from = "."
-    lsts = Gtk.ListStore(str, str, str, str)
+    lsts = Gtk.ListStore(str, str, str, str, str, str, str, str)
     trvw1 = Gtk.TreeView(model=lsts)
     swnd1 = Gtk.ScrolledWindow()
     swnd1.add(trvw1)
+    sbar = Gtk.Statusbar()
+    sbar_id = sbar.get_context_id("sbar1")
 
     def __init__(self, dir_from = "."):
         self.dir_from = dir_from
         Gtk.Window.__init__(self, title="iptvka")
 
-        self.set_default_size(750, 550)
-        
+        self.set_default_size(Gdk.Screen.width()*3/4, Gdk.Screen.height()*3/4)
+
         action_group = Gtk.ActionGroup("my_actions")
 
         self.add_file_menu_actions(action_group)
@@ -67,21 +72,23 @@ class iptvkaWindow(Gtk.Window):
 
         toolbar = uimanager.get_widget("/ToolBar")
         box.pack_start(toolbar, False, False, 0)
-        
-        x_title = ["provider", "ip", "port", "name"]
+
+        x_title = ["#", "provider", "ip", "port", "name", "#EXTVLCOPT", "demux", "#STB"]
 
         for x_col in range(len(x_title)):
             column_text = Gtk.TreeViewColumn(x_title[x_col], Gtk.CellRendererText(), text=x_col)
             self.trvw1.append_column(column_text)
             #print x_col, x_title[x_col]
-        
+
         self.reload_ip_from_dir()
+        self.update_sbar("stat")
 
         #renderer_pixbuf = Gtk.CellRendererPixbuf()
         #column_pixbuf = Gtk.TreeViewColumn("Image", renderer_pixbuf, stock_id=1)
         #trvw1.append_column(column_pixbuf)
-        
+
         box.pack_start(self.swnd1, True, True, 0)
+        box.pack_start(self.sbar, False, False, 0)
 
         #eventbox = Gtk.EventBox()
         #eventbox.connect("button-press-event", self.on_button_press_event)
@@ -102,6 +109,10 @@ class iptvkaWindow(Gtk.Window):
         action_filerefresh = Gtk.Action("FileRefresh", None, None, Gtk.STOCK_REFRESH)
         action_filerefresh.connect("activate", self.on_menu_filerefresh)
         action_group.add_action(action_filerefresh)
+
+        action_fileclear = Gtk.Action("FileClear", None, None, Gtk.STOCK_CLEAR)
+        action_fileclear.connect("activate", self.on_menu_fileclear)
+        action_group.add_action(action_fileclear)
 
         action_filesave = Gtk.Action("FileSave", None, None, Gtk.STOCK_SAVE)
         action_filesave.connect("activate", self.on_menu_filesave)
@@ -162,7 +173,13 @@ class iptvkaWindow(Gtk.Window):
         abtd.hide()
 
     def on_menu_filerefresh(self, widget):
+        self.lsts.clear()
         self.reload_ip_from_dir()
+        self.update_sbar("stat")
+
+    def on_menu_fileclear(self, widget):
+        self.lsts.clear()
+        self.update_sbar("stat")
 
     def on_menu_filesave(self, widget):
         print "save item"
@@ -172,7 +189,7 @@ class iptvkaWindow(Gtk.Window):
         dir_format = "format"
         #dir_list = "list"
         #dir_tag = "tag"
-        need_n_lines = 3
+        need_n_lines = 4
         h      = open(join(dir_format, "head"),        "r").read()
         t_pre  = open(join(dir_format, "tag_prefix"),  "r").read()
         t_post = open(join(dir_format, "tag_postfix"), "r").read()
@@ -201,4 +218,10 @@ class iptvkaWindow(Gtk.Window):
                         if len(s1) < need_n_lines:
                             for x in range(len(s1), need_n_lines):
                                 s1.append("")
-                        self.lsts.append([prov, ip1234, port, s1[0]])
+                        self.lsts.append([str(len(self.lsts) + 1), prov, ip1234, port, s1[0], s1[1], s1[2], s1[3]])
+
+    def update_sbar(self, act = "clear"):
+        if act == "clear":
+            self.sbar.push(self.sbar_id, "")
+        elif act == "stat":
+            self.sbar.push(self.sbar_id, "channels = " + str(len(self.lsts)))
