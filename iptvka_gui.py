@@ -38,7 +38,10 @@ UI_INFO = """
 class iptvkaWindow(Gtk.Window):
     dir_from = "."
     lsts = Gtk.ListStore(str, str, str, str)
-    treeview = Gtk.TreeView(model=lsts)
+    trvw1 = Gtk.TreeView(model=lsts)
+    swnd1 = Gtk.ScrolledWindow()
+    swnd1.add(trvw1)
+
     def __init__(self, dir_from = "."):
         self.dir_from = dir_from
         Gtk.Window.__init__(self, title="iptvka")
@@ -66,16 +69,16 @@ class iptvkaWindow(Gtk.Window):
 
         for x_col in range(len(x_title)):
             column_text = Gtk.TreeViewColumn(x_title[x_col], Gtk.CellRendererText(), text=x_col)
-            self.treeview.append_column(column_text)
+            self.trvw1.append_column(column_text)
             print x_col, x_title[x_col]
         
         self.reload_ip_from_dir()
 
         #renderer_pixbuf = Gtk.CellRendererPixbuf()
         #column_pixbuf = Gtk.TreeViewColumn("Image", renderer_pixbuf, stock_id=1)
-        #treeview.append_column(column_pixbuf)
+        #trvw1.append_column(column_pixbuf)
         
-        box.pack_start(self.treeview, False, False, 0)
+        box.pack_start(self.swnd1, True, True, 0)
 
         #eventbox = Gtk.EventBox()
         #eventbox.connect("button-press-event", self.on_button_press_event)
