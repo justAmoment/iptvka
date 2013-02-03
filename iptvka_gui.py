@@ -44,6 +44,7 @@ UI_INFO = """
 class iptvkaWindow(Gtk.Window):
     dir_from = "."
     lsts = Gtk.ListStore(str, str, str, str, str, str, str, str)
+    x_title = ["#", "provider", "ip", "port", "name", "#EXTVLCOPT", "demux", "#STB"]
     trvw1 = Gtk.TreeView(model=lsts)
     swnd1 = Gtk.ScrolledWindow()
     swnd1.add(trvw1)
@@ -73,12 +74,9 @@ class iptvkaWindow(Gtk.Window):
         toolbar = uimanager.get_widget("/ToolBar")
         box.pack_start(toolbar, False, False, 0)
 
-        x_title = ["#", "provider", "ip", "port", "name", "#EXTVLCOPT", "demux", "#STB"]
-
-        for x_col in range(len(x_title)):
-            column_text = Gtk.TreeViewColumn(x_title[x_col], Gtk.CellRendererText(), text=x_col)
+        for x_col in range(len(self.x_title)):
+            column_text = Gtk.TreeViewColumn(self.x_title[x_col], Gtk.CellRendererText(), text=x_col)
             self.trvw1.append_column(column_text)
-            #print x_col, x_title[x_col]
 
         self.reload_ip_from_dir()
         self.update_sbar("stat")
@@ -212,7 +210,7 @@ class iptvkaWindow(Gtk.Window):
                     for i in ii:
                         ip1234 = str(y) + "." + str(i)
                         #print ip1234
-                        
+
                         f1 = open(join(self.dir_from, dir_prov, prov, port, y, i), "r")
                         s1 = [x.strip() for x in f1.readlines()]
                         if len(s1) < need_n_lines:
@@ -221,7 +219,18 @@ class iptvkaWindow(Gtk.Window):
                         self.lsts.append([str(len(self.lsts) + 1), prov, ip1234, port, s1[0], s1[1], s1[2], s1[3]])
 
     def update_sbar(self, act = "clear"):
+        L = self.lsts
+        Lnc = L.get_n_columns()
+        Lnr = len(L)
+        S = self.sbar
+        S_id = self.sbar_id
+        u = "Uniq values:   "
         if act == "clear":
-            self.sbar.push(self.sbar_id, "")
+            S.push(S_id, "")
         elif act == "stat":
-            self.sbar.push(self.sbar_id, "channels = " + str(len(self.lsts)))
+            for c in range(Lnc):
+                d = len(list(set([L[r][c] for r in range(Lnr) if L[r][c]])))
+                u += self.x_title[c] + " = " + str(d) + "   |   "
+        S.push(S_id, u)
+
+
