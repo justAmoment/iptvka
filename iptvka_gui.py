@@ -9,6 +9,7 @@ UI_INFO = """
   <menubar name='MenuBar'>
     <menu action='FileMenu'>
       <menuitem action='FileRefresh' />
+      <menuitem action='FileSave' />
       <separator />
       <menuitem action='FileQuit' />
     </menu>
@@ -26,6 +27,8 @@ UI_INFO = """
   </menubar>
   <toolbar name='ToolBar'>
     <toolitem action='FileRefresh' />
+    <separator />
+    <toolitem action='FileSave' />
     <separator />
     <toolitem action='CreateAllM3U' />
     <separator />
@@ -100,6 +103,10 @@ class iptvkaWindow(Gtk.Window):
         action_filerefresh.connect("activate", self.on_menu_filerefresh)
         action_group.add_action(action_filerefresh)
 
+        action_filesave = Gtk.Action("FileSave", None, None, Gtk.STOCK_SAVE)
+        action_filesave.connect("activate", self.on_menu_filesave)
+        action_group.add_action(action_filesave)
+
         action_filequit = Gtk.Action("FileQuit", None, None, Gtk.STOCK_QUIT)
         action_filequit.connect("activate", self.on_menu_filequit)
         action_group.add_action(action_filequit)
@@ -156,6 +163,9 @@ class iptvkaWindow(Gtk.Window):
 
     def on_menu_filerefresh(self, widget):
         self.reload_ip_from_dir()
+
+    def on_menu_filesave(self, widget):
+        print "save item"
 
     def reload_ip_from_dir(self):
         dir_prov = "provider"
