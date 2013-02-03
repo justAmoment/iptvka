@@ -70,7 +70,7 @@ class iptvkaWindow(Gtk.Window):
         for x_col in range(len(x_title)):
             column_text = Gtk.TreeViewColumn(x_title[x_col], Gtk.CellRendererText(), text=x_col)
             self.trvw1.append_column(column_text)
-            print x_col, x_title[x_col]
+            #print x_col, x_title[x_col]
         
         self.reload_ip_from_dir()
 
@@ -169,22 +169,22 @@ class iptvkaWindow(Gtk.Window):
         provs = os.listdir(join(self.dir_from, dir_prov))
         provs.sort()
         for prov in provs:
-            print "=", prov
+            #print "=", prov
             ports = os.listdir(join(self.dir_from, dir_prov, prov))
             ports.sort(key=int)
             for port in ports:
-                print "=", port
+                #print "=", port
                 yy = os.listdir(join(self.dir_from, dir_prov, prov, port))
                 yy.sort()
-                print yy
+                #print yy
                 for y in yy:
-                    print "==", y
+                    #print "==", y
                     ii = os.listdir(join(self.dir_from, dir_prov, prov, port, y))
                     ii.sort(key=int)
-                    print ii
+                    #print ii
                     for i in ii:
                         ip1234 = str(y) + "." + str(i)
-                        print ip1234
+                        #print ip1234
                         
                         f1 = open(join(self.dir_from, dir_prov, prov, port, y, i), "r")
                         s1 = [x.strip() for x in f1.readlines()]
