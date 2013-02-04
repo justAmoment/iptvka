@@ -3,6 +3,9 @@ import os
 from os.path import join
 
 def inTags(tl, ta, ip, t_pre, t_post):
+    """Return string of {tags} where 'ip' is in 'ta'.
+    'ta' - dict with key='tag', val = list of 'ip'.
+    ta = {tag1: [ip1, ip2], tag2: [ip1, ip3]}"""
     ret = ""
     for z in tl:
         if ip in ta[z]:
