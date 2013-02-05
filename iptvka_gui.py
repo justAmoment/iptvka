@@ -1,7 +1,7 @@
 #!/bin/python
 
+import os, subprocess
 from gi.repository import Gtk, Gdk
-import os
 from os.path import join
 
 UI_INFO = """
@@ -132,9 +132,9 @@ class iptvkaWindow(Gtk.Window):
         action_helpmenu = Gtk.Action("HelpMenu", "Help", None, None)
         action_group.add_action(action_helpmenu)
 
-        action_docum = Gtk.Action("Docum", None, None, Gtk.STOCK_HELP)
-        action_docum.connect("activate", self.on_menu_def)
-        action_group.add_action(action_docum)
+        action_help = Gtk.Action("Docum", None, None, Gtk.STOCK_HELP)
+        action_help.connect("activate", self.on_menu_help)
+        action_group.add_action(action_help)
 
         action_about = Gtk.Action("About", None, None, Gtk.STOCK_ABOUT)
         action_about.connect("activate", self.on_menu_about)
@@ -158,6 +158,16 @@ class iptvkaWindow(Gtk.Window):
     def on_menu_filequit(self, widget):
         Gtk.main_quit()
 
+    def on_menu_help(self, widget):
+        url_wiki = "https://github.com/justAmoment/iptvka/wiki"
+        try:
+            subprocess.call(('xdg-open', url_wiki))
+        except:
+            dialog = Gtk.MessageDialog(self, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, "Additional info and help you can find on the wiki")
+            dialog.format_secondary_text(url_wiki)
+            dialog.run()
+            dialog.hide()
+    
     def on_menu_about(self, widget):
         abtd = Gtk.AboutDialog()
         abtd.set_version("version 0.1")
