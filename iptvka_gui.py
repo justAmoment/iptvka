@@ -42,7 +42,6 @@ UI_INFO = """
 """
 
 class iptvkaWindow(Gtk.Window):
-    dir_from = "."
     lsts = Gtk.ListStore(str, str, str, str, str, str, str, str)
     x_title = ["#", "provider", "ip", "port", "name", "#EXTVLCOPT", "demux", "#STB"]
     trvw1 = Gtk.TreeView(model=lsts)
@@ -51,7 +50,7 @@ class iptvkaWindow(Gtk.Window):
     sbar = Gtk.Statusbar()
     sbar_id = sbar.get_context_id("sbar1")
 
-    def __init__(self, dir_from = "."):
+    def __init__(self, dir_from):
         self.dir_from = dir_from
         Gtk.Window.__init__(self, title="iptvka")
 
@@ -198,9 +197,9 @@ class iptvkaWindow(Gtk.Window):
         #dir_list = "list"
         #dir_tag = "tag"
         need_n_lines = 4
-        h      = open(join(dir_format, "head"),        "r").read()
-        t_pre  = open(join(dir_format, "tag_prefix"),  "r").read()
-        t_post = open(join(dir_format, "tag_postfix"), "r").read()
+        h      = open(join(self.dir_from, dir_format, "head"),        "r").read()
+        t_pre  = open(join(self.dir_from, dir_format, "tag_prefix"),  "r").read()
+        t_post = open(join(self.dir_from, dir_format, "tag_postfix"), "r").read()
         provs = os.listdir(join(self.dir_from, dir_prov))
         provs.sort()
         for prov in provs:
