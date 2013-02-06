@@ -43,7 +43,7 @@ UI_INFO = """
 
 class iptvkaWindow(Gtk.Window):
     lsts = Gtk.ListStore(str, str, str, str, str, str, str, str)
-    x_title = ["#", "provider", "ip", "port", "name", "#EXTVLCOPT", "demux", "#STB"]
+    x_title = ["#", "provider", "ip", "port", "name", "demux", "#STB", "#EXTVLCOPT"]
     trvw1 = Gtk.TreeView(model=lsts)
     swnd1 = Gtk.ScrolledWindow()
     swnd1.add(trvw1)

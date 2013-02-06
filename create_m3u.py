@@ -17,7 +17,7 @@ dir_provider = join("provider", provider)
 dir_format   = "format"
 dir_list     = "list"
 dir_tag      = "tag"
-need_n_lines = 3
+need_n_lines = 4
 h      = open(join(dir_format, "head"),        "r").read()
 t_pre  = open(join(dir_format, "tag_prefix"),  "r").read()
 t_post = open(join(dir_format, "tag_postfix"), "r").read()
@@ -59,15 +59,15 @@ for tp in tps:
                         s1.append("")
                 # add demux module name s1[1]. Example "http:" --> "http/ffmpeg:"
                 s_prefix = p
-                if s1[2]:
-                    s_prefix = s_prefix.replace(":", "/" + s1[2] + ":", 1)
+                if s1[1]:
+                    s_prefix = s_prefix.replace(":", "/" + s1[1] + ":", 1)
                 # add #EXTINF:
                 zx = provider + "." + port + "." + ip1234
                 ma[zx] = []
                 ma[zx] = str(r[0]) + ", " + str(i) + " -- " + s1[0] + inTags(tl, ta, zx, t_pre, t_post) + "\n"
                 # add #EXTVLCOPT:
-                if (len(r) > 1) and s1[1]:
-                    for x in s1[1].split():
+                if (len(r) > 1) and s1[3]:
+                    for x in s1[3].split():
                         ma[zx] += str(r[1]) + x + "\n"
                 # add IP:port
                 ma[zx] += str(s_prefix) + str(ip1234) + ":" + str(port) + "\n"
