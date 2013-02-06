@@ -23,7 +23,8 @@ except:
 try:
     window = iptvkaWindow(dir_from = dir_from)
 except:
-    print "'dir_from' has a wrong value = '%s'. Please check the config file '%s'. Now 'dir_from' set to the current directory." % (dir_from, f_cfg)
+    print "Maybe 'dir_from' has a wrong value = '%s'. Please check the config file '%s'. Now 'dir_from' set to the current directory." % (dir_from, f_cfg)
+    dir_from = os.path.dirname(__file__)
     window = iptvkaWindow(dir_from = dir_from)
 window.connect("delete-event", Gtk.main_quit)
 window.show_all()
