@@ -256,20 +256,28 @@ class iptvkaWindow(Gtk.Window):
 
     def compare(self, model, row1, row2, sort_val):
         ret = 0
-        sort_column = model.get_sort_column_id()[0]
-        if sort_val == "int":
-            val1 = int(model.get_value(row1, sort_column))
-            val2 = int(model.get_value(row2, sort_column))
-            if   val1 < val2:   ret = -1
-            elif val1 > val2:   ret = 1
+        try:
+            sort_column = model.get_sort_column_id()[0]
+            if sort_val == "int":
+                val1 = int(model.get_value(row1, sort_column))
+                val2 = int(model.get_value(row2, sort_column))
+                if   val1 < val2:   ret = -1
+                elif val1 > val2:   ret = 1
 
-        elif sort_val == "str":
-            val1 = model.get_value(row1, sort_column)
-            val2 = model.get_value(row2, sort_column)
-            if   val1 < val2:   ret = -1
-            elif val1 > val2:   ret = 1
+            elif sort_val == "str":
+                val1 = model.get_value(row1, sort_column)
+                val2 = model.get_value(row2, sort_column)
+                if   val1 < val2:   ret = -1
+                elif val1 > val2:   ret = 1
 
-        elif sort_val == "ip4":
+            elif sort_val == "ip4":
+                val1 = model.get_value(row1, sort_column)
+                val1 = [int(x) for x in val1.split(".")]
+                val2 = model.get_value(row2, sort_column)
+                val2 = [int(x) for x in val2.split(".")]
+                if   val1 < val2:   ret = -1
+                elif val1 > val2:   ret = 1
+        except:
             pass
 
         return ret
