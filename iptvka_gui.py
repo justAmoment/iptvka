@@ -44,6 +44,16 @@ UI_INFO = """
 class iptvkaWindow(Gtk.Window):
     lsts = Gtk.ListStore(str, str, str, str, str, str, str, str)
     x_title = ["#", "provider", "ip", "port", "name", "demux", "#STB", "#EXTVLCOPT"]
+    x_title_sort_val = {
+                    "#" : "int",
+             "provider" : "str",
+                   "ip" : "ip4",
+                 "port" : "int",
+                 "name" : "str",
+                "demux" : "str",
+                 "#STB" : "str",
+           "#EXTVLCOPT" : "str",
+                        }
     trvw1 = Gtk.TreeView(model=lsts)
     swnd1 = Gtk.ScrolledWindow()
     swnd1.add(trvw1)
@@ -74,8 +84,10 @@ class iptvkaWindow(Gtk.Window):
         box.pack_start(toolbar, False, False, 0)
 
         for x_col in range(len(self.x_title)):
-            column_text = Gtk.TreeViewColumn(self.x_title[x_col], Gtk.CellRendererText(), text=x_col)
-            self.trvw1.append_column(column_text)
+            column = Gtk.TreeViewColumn(self.x_title[x_col], Gtk.CellRendererText(), text=x_col)
+            column.set_sort_column_id(x_col)
+            self.trvw1.append_column(column)
+            self.lsts.set_sort_func(x_col, self.compare, self.x_title_sort_val[self.x_title[x_col]])
 
         self.reload_ip_from_dir()
         self.update_sbar("stat")
@@ -242,4 +254,22 @@ class iptvkaWindow(Gtk.Window):
                 u += self.x_title[c] + " = " + str(d) + "   |   "
         S.push(S_id, u)
 
+    def compare(self, model, row1, row2, sort_val):
+        ret = 0
+        sort_column = model.get_sort_column_id()[0]
+        if sort_val == "int":
+            val1 = int(model.get_value(row1, sort_column))
+            val2 = int(model.get_value(row2, sort_column))
+            if   val1 < val2:   ret = -1
+            elif val1 > val2:   ret = 1
 
+        elif sort_val == "str":
+            val1 = model.get_value(row1, sort_column)
+            val2 = model.get_value(row2, sort_column)
+            if   val1 < val2:   ret = -1
+            elif val1 > val2:   ret = 1
+
+        elif sort_val == "ip4":
+            pass
+
+        return ret
