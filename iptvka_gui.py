@@ -42,6 +42,7 @@ UI_INFO = """
 """
 
 class iptvkaWindow(Gtk.Window):
+    """Class store functions to interract with user. GUI / GTK / ListView / TreeView."""
     lsts = Gtk.ListStore(str, str, str, str, str, str, str, str)
     x_title = ["#", "provider", "ip", "port", "name", "demux", "#STB", "#EXTVLCOPT"]
     x_title_sort_val = {
@@ -207,6 +208,7 @@ class iptvkaWindow(Gtk.Window):
         print "save item"
 
     def reload_ip_from_dir(self):
+        """Get ip/port/name/params from source dirs and set it to listview."""
         dir_prov = "provider"
         dir_format = "format"
         #dir_list = "list"
@@ -243,6 +245,7 @@ class iptvkaWindow(Gtk.Window):
                         self.lsts.append([str(len(self.lsts) + 1), prov, ip1234, port, s1[0], s1[1], s1[2], s1[3]])
 
     def update_sbar(self, act = "clear"):
+        """Update statusbar (act = 'clear' | 'stat')."""
         L = self.lsts
         Lnc = L.get_n_columns()
         Lnr = len(L)
@@ -258,6 +261,7 @@ class iptvkaWindow(Gtk.Window):
         S.push(S_id, u)
 
     def compare(self, model, row1, row2, sort_val):
+        """Function is sorting rows in listview."""
         ret = 0
         try:
             sort_column = model.get_sort_column_id()[0]
