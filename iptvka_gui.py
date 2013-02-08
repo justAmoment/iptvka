@@ -63,9 +63,12 @@ class iptvkaWindow(Gtk.Window):
     def __init__(self, dir_from):
         self.dir_from = dir_from
         Gtk.Window.__init__(self, title="iptvka")
-
-        self.set_default_size(Gdk.Screen.width()*3/4, Gdk.Screen.height()*3/4)
-
+        new_w = int(Gdk.Screen.width() * 3/4)
+        new_h = int(Gdk.Screen.height() * 3/4)
+        new_x = int((Gdk.Screen.width() - new_w) / 2)
+        new_y = int((Gdk.Screen.height() - new_h) / 2)
+        self.set_default_size(new_w, new_h)
+        self.move(new_x, new_y)
         action_group = Gtk.ActionGroup("my_actions")
 
         self.add_file_menu_actions(action_group)
