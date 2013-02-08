@@ -205,7 +205,21 @@ class iptvkaWindow(Gtk.Window):
         self.update_sbar("stat")
 
     def on_menu_filesave(self, widget):
-        print "save item"
+        """Save ip/port/name/params from listview to source dirs."""
+        dlg1 = Gtk.MessageDialog(self, 0, Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, "Save channels to source dir?")
+        dlg1.format_secondary_text("dir = %s\nch = %s" % (self.dir_from, len(self.lsts)))
+        response = dlg1.run()
+        dlg1.hide()
+        if response == Gtk.ResponseType.YES:
+            print "save item"
+            dlg2 = Gtk.MessageDialog(self, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, "Success")
+            dlg2.format_secondary_text("dir = %s\n%s channels saved." % (self.dir_from, len(self.lsts)))
+            dlg2.run()
+            dlg2.hide()
+        else:
+            print "no save"
+        
+
 
     def reload_ip_from_dir(self):
         """Get ip/port/name/params from source dirs and set it to listview."""
