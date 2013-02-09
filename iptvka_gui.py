@@ -216,32 +216,30 @@ class iptvkaWindow(Gtk.Window):
             Lnr = len(L)
             n_ok = 0
             for r in range(Lnr):
-                prov = L[r][1]
-                port = L[r][3]
-                ip1234 = [str(int(x)) for x in L[r][2].split(".")]
+                nx, prov, ip1234, port, name, demux, stb, extvlc = L[r][:]
+                ip1234 = [str(int(x)) for x in ip1234.split(".")]
                 ip123 = ".".join(ip1234[:-1])
                 ip4 = ip1234[-1]
-                name = L[r][4]
-                demux = L[r][5]
-                stb = L[r][6]
-                extvlc = L[r][7]
                 dir1 = join(self.dir_from, dir_prov, prov, port, ip123)
+                # Check problem with realpath
+                if dir1 == os.path.realpath(dir1):
+                    try:
+                        if not os.path.exists(dir1):
+                            os.makedirs(dir1)
+                    except:
+                        pass
 
-                try:
-                    if not os.path.exists(dir1):
-                        os.makedirs(dir1)
-                except:
-                    pass
-
-                try:
-                    if os.path.isdir(dir1):
-                        fn1 = join(self.dir_from, dir_prov, prov, port, ip123, ip4)
-                        f1 = open(fn1, "w")
-                        f1.writelines("\n".join(L[r][-4:]))
-                        f1.close()
-                        n_ok += 1
-                except:
-                    pass
+                    try:
+                        if os.path.isdir(dir1):
+                            fn1 = join(self.dir_from, dir_prov, prov, port, ip123, ip4)
+                            f1 = open(fn1, "w")
+                            f1.writelines("\n".join(L[r][-4:]))
+                            f1.close()
+                            n_ok += 1
+                    except:
+                        pass
+                else:
+                    print "Error: channel %s not saved, realpath '%s' not equal dir '%s'." % (nx, os.path.realpath(dir1), dir1)
 
             if n_ok == len(self.lsts):
                 msg2 = "Success 100%"
