@@ -206,20 +206,53 @@ class iptvkaWindow(Gtk.Window):
 
     def on_menu_filesave(self, widget):
         """Save ip/port/name/params from listview to source dirs."""
+        dir_prov = "provider"
         dlg1 = Gtk.MessageDialog(self, 0, Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, "Save channels to source dir?")
         dlg1.format_secondary_text("dir = %s\nch = %s" % (self.dir_from, len(self.lsts)))
         response = dlg1.run()
         dlg1.hide()
         if response == Gtk.ResponseType.YES:
-            print "save item"
-            dlg2 = Gtk.MessageDialog(self, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, "Success")
-            dlg2.format_secondary_text("dir = %s\n%s channels saved." % (self.dir_from, len(self.lsts)))
+            L = self.lsts
+            Lnr = len(L)
+            n_ok = 0
+            for r in range(Lnr):
+                prov = L[r][1]
+                port = L[r][3]
+                ip1234 = [str(int(x)) for x in L[r][2].split(".")]
+                ip123 = ".".join(ip1234[:-1])
+                ip4 = ip1234[-1]
+                name = L[r][4]
+                demux = L[r][5]
+                stb = L[r][6]
+                extvlc = L[r][7]
+                dir1 = join(self.dir_from, dir_prov, prov, port, ip123)
+
+                try:
+                    if not os.path.exists(dir1):
+                        os.makedirs(dir1)
+                except:
+                    pass
+
+                try:
+                    if os.path.isdir(dir1):
+                        fn1 = join(self.dir_from, dir_prov, prov, port, ip123, ip4)
+                        f1 = open(fn1, "w")
+                        f1.writelines("\n".join(L[r][-4:]))
+                        f1.close()
+                        n_ok += 1
+                except:
+                    pass
+
+            if n_ok == len(self.lsts):
+                msg2 = "Success 100%"
+            else:
+                msg2 = "Partial success %.02f%%" % (100.00 * n_ok / len(self.lsts))
+            dlg2 = Gtk.MessageDialog(self, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, msg2)
+            dlg2.format_secondary_text("dir = %s\n(%s from %s) channels saved" % (self.dir_from, n_ok, len(self.lsts)))
             dlg2.run()
             dlg2.hide()
         else:
-            print "no save"
-        
-
+            pass
 
     def reload_ip_from_dir(self):
         """Get ip/port/name/params from source dirs and set it to listview."""
