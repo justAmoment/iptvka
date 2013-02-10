@@ -309,8 +309,6 @@ class iptvkaWindow(Gtk.Window):
         dir_from = self.iptvka.dir_from
         dir_prov = self.iptvka.dir_prov
         dir_format = self.iptvka.dir_format
-        #dir_list = "list"
-        #dir_tag = "tag"
         need_n_lines = 4
         h      = open(join(dir_from, dir_format, "head"),        "r").read()
         t_pre  = open(join(dir_from, dir_format, "tag_prefix"),  "r").read()
@@ -318,22 +316,16 @@ class iptvkaWindow(Gtk.Window):
         provs = os.listdir(join(dir_from, dir_prov))
         provs.sort()
         for prov in provs:
-            #print "=", prov
             ports = os.listdir(join(dir_from, dir_prov, prov))
             ports.sort(key=int)
             for port in ports:
-                #print "=", port
                 yy = os.listdir(join(dir_from, dir_prov, prov, port))
                 yy.sort()
-                #print yy
                 for y in yy:
-                    #print "==", y
                     ii = os.listdir(join(dir_from, dir_prov, prov, port, y))
                     ii.sort(key=int)
-                    #print ii
                     for i in ii:
                         ip1234 = str(y) + "." + str(i)
-                        #print ip1234
 
                         f1 = open(join(dir_from, dir_prov, prov, port, y, i), "r")
                         s1 = [x.strip() for x in f1.readlines()]
