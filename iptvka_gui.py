@@ -61,8 +61,8 @@ class iptvkaWindow(Gtk.Window):
     sbar = Gtk.Statusbar()
     sbar_id = sbar.get_context_id("sbar1")
 
-    def __init__(self, dir_from):
-        self.dir_from = dir_from
+    def __init__(self, iptvka):
+        self.iptvka = iptvka
         Gtk.Window.__init__(self, title="iptvka")
         new_w = int(Gdk.Screen.width() * 3/4)
         new_h = int(Gdk.Screen.height() * 3/4)
@@ -206,9 +206,10 @@ class iptvkaWindow(Gtk.Window):
 
     def on_menu_filesave(self, widget):
         """Save ip/port/name/params from listview to source dirs."""
-        dir_prov = "provider"
+        dir_from = self.iptvka.dir_from
+        dir_prov = self.iptvka.dir_prov
         dlg1 = Gtk.MessageDialog(self, 0, Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, "Save channels to source dir?")
-        dlg1.format_secondary_text("dir = %s\nch = %s" % (self.dir_from, len(self.lsts)))
+        dlg1.format_secondary_text("dir = %s\nch = %s" % (dir_from, len(self.lsts)))
         response = dlg1.run()
         dlg1.hide()
         if response == Gtk.ResponseType.YES:
@@ -220,7 +221,7 @@ class iptvkaWindow(Gtk.Window):
                 ip1234 = [str(int(x)) for x in ip1234.split(".")]
                 ip123 = ".".join(ip1234[:-1])
                 ip4 = ip1234[-1]
-                dir1 = join(self.dir_from, dir_prov, prov, port, ip123)
+                dir1 = join(dir_from, dir_prov, prov, port, ip123)
                 # Check problem with realpath
                 if dir1 == os.path.realpath(dir1):
                     try:
@@ -231,7 +232,7 @@ class iptvkaWindow(Gtk.Window):
 
                     try:
                         if os.path.isdir(dir1):
-                            fn1 = join(self.dir_from, dir_prov, prov, port, ip123, ip4)
+                            fn1 = join(dir_from, dir_prov, prov, port, ip123, ip4)
                             f1 = open(fn1, "w")
                             f1.writelines("\n".join(L[r][-4:]))
                             f1.close()
@@ -246,7 +247,7 @@ class iptvkaWindow(Gtk.Window):
             else:
                 msg2 = "Partial success %.02f%%" % (100.00 * n_ok / len(self.lsts))
             dlg2 = Gtk.MessageDialog(self, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, msg2)
-            dlg2.format_secondary_text("dir = %s\n(%s from %s) channels saved" % (self.dir_from, n_ok, len(self.lsts)))
+            dlg2.format_secondary_text("dir = %s\n(%s from %s) channels saved" % (dir_from, n_ok, len(self.lsts)))
             dlg2.run()
             dlg2.hide()
         else:
@@ -254,10 +255,11 @@ class iptvkaWindow(Gtk.Window):
 
     def on_menu_createallm3u(self, widget):
         """Create and save all 'm3u' from listview to target dir 'm3u/*'."""
-        dir_format = "format"
-        dir_m3u = "m3u"
+        dir_from = self.iptvka.dir_from
+        dir_format = self.iptvka.dir_format
+        dir_m3u = self.iptvka.dir_m3u
 
-        h = open(join(self.dir_from, dir_format, "head"), "r").read()
+        h = open(join(dir_from, dir_format, "head"), "r").read()
 
         L = self.lsts
         Lnr = len(L)
@@ -282,7 +284,7 @@ class iptvkaWindow(Gtk.Window):
         n_ok = 0
         for (tp, prov) in tm:
             # Check problem with realpath
-            dir1 = join(self.dir_from, dir_m3u)
+            dir1 = join(dir_from, dir_m3u)
             if dir1 == os.path.realpath(dir1):
                 try:
                     if not os.path.exists(dir1):
@@ -292,7 +294,7 @@ class iptvkaWindow(Gtk.Window):
 
                 try:
                     if os.path.isdir(dir1):
-                        fn1 = join(self.dir_from, dir_m3u, "test_" + prov + "_" + tp + "_all.m3u")
+                        fn1 = join(dir_from, dir_m3u, "test_" + prov + "_" + tp + "_all.m3u")
                         f1 = open(fn1, "w")
                         f1.writelines(tm[(tp, prov)])
                         f1.close()
@@ -304,35 +306,36 @@ class iptvkaWindow(Gtk.Window):
 
     def reload_ip_from_dir(self):
         """Get ip/port/name/params from source dirs and set it to listview."""
-        dir_prov = "provider"
-        dir_format = "format"
+        dir_from = self.iptvka.dir_from
+        dir_prov = self.iptvka.dir_prov
+        dir_format = self.iptvka.dir_format
         #dir_list = "list"
         #dir_tag = "tag"
         need_n_lines = 4
-        h      = open(join(self.dir_from, dir_format, "head"),        "r").read()
-        t_pre  = open(join(self.dir_from, dir_format, "tag_prefix"),  "r").read()
-        t_post = open(join(self.dir_from, dir_format, "tag_postfix"), "r").read()
-        provs = os.listdir(join(self.dir_from, dir_prov))
+        h      = open(join(dir_from, dir_format, "head"),        "r").read()
+        t_pre  = open(join(dir_from, dir_format, "tag_prefix"),  "r").read()
+        t_post = open(join(dir_from, dir_format, "tag_postfix"), "r").read()
+        provs = os.listdir(join(dir_from, dir_prov))
         provs.sort()
         for prov in provs:
             #print "=", prov
-            ports = os.listdir(join(self.dir_from, dir_prov, prov))
+            ports = os.listdir(join(dir_from, dir_prov, prov))
             ports.sort(key=int)
             for port in ports:
                 #print "=", port
-                yy = os.listdir(join(self.dir_from, dir_prov, prov, port))
+                yy = os.listdir(join(dir_from, dir_prov, prov, port))
                 yy.sort()
                 #print yy
                 for y in yy:
                     #print "==", y
-                    ii = os.listdir(join(self.dir_from, dir_prov, prov, port, y))
+                    ii = os.listdir(join(dir_from, dir_prov, prov, port, y))
                     ii.sort(key=int)
                     #print ii
                     for i in ii:
                         ip1234 = str(y) + "." + str(i)
                         #print ip1234
 
-                        f1 = open(join(self.dir_from, dir_prov, prov, port, y, i), "r")
+                        f1 = open(join(dir_from, dir_prov, prov, port, y, i), "r")
                         s1 = [x.strip() for x in f1.readlines()]
                         if len(s1) < need_n_lines:
                             for x in range(len(s1), need_n_lines):
