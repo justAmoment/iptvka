@@ -140,7 +140,7 @@ class iptvkaWindow(Gtk.Window):
         action_group.add_action(action_actionmenu)
 
         action_createallm3u = Gtk.Action("CreateAllM3U", None, None, Gtk.STOCK_CONVERT)
-        action_createallm3u.connect("activate", self.on_menu_def)
+        action_createallm3u.connect("activate", self.on_menu_createallm3u)
         action_group.add_action(action_createallm3u)
 
         # menu 3
@@ -251,6 +251,56 @@ class iptvkaWindow(Gtk.Window):
             dlg2.hide()
         else:
             pass
+
+    def on_menu_createallm3u(self, widget):
+        """Create and save all 'm3u' from listview to target dir 'm3u/*'."""
+        dir_format = "format"
+        dir_m3u = "m3u"
+
+        h = open(join(self.dir_from, dir_format, "head"), "r").read()
+
+        L = self.lsts
+        Lnr = len(L)
+        text_m3u = str(h)
+        tm = {}
+        tps = ["igmp", "udpxy"]
+        for tp in tps:
+            p = open(join(dir_format, "prefix_ip_" + tp), "r").read()
+
+            for r in range(Lnr):
+                ip_pre = p
+                nx, prov, ip1234, port, name, demux, stb, extvlc = L[r][:]
+                ip4 = str(int(ip1234.rsplit(".",1)[-1]))
+                if demux:
+                    ip_pre = ip_pre.replace(":", "/" + demux + ":", 1)
+                if (tp, prov) not in tm:
+                    tm[(tp, prov)] = str(h)
+                tm[(tp, prov)] += "#EXTINF:-1, %s -- %s\n" % (ip4, name)
+                if extvlc:
+                    tm[(tp, prov)] += "#EXTVLCOPT:%s\n" % (extvlc)
+                tm[(tp, prov)] += "%s%s:%s\n" % (ip_pre, ip1234, port)
+        n_ok = 0
+        for (tp, prov) in tm:
+            # Check problem with realpath
+            dir1 = join(self.dir_from, dir_m3u)
+            if dir1 == os.path.realpath(dir1):
+                try:
+                    if not os.path.exists(dir1):
+                        os.makedirs(dir1)
+                except:
+                    pass
+
+                try:
+                    if os.path.isdir(dir1):
+                        fn1 = join(self.dir_from, dir_m3u, "test_" + prov + "_" + tp + "_all.m3u")
+                        f1 = open(fn1, "w")
+                        f1.writelines(tm[(tp, prov)])
+                        f1.close()
+                        n_ok += 1
+                except:
+                    pass
+            else:
+                print "Error: channel %s not saved, realpath '%s' not equal dir '%s'." % (nx, os.path.realpath(dir1), dir1)
 
     def reload_ip_from_dir(self):
         """Get ip/port/name/params from source dirs and set it to listview."""

@@ -4,7 +4,7 @@ import ConfigParser, sys, os
 from gi.repository import Gtk, Gdk
 from iptvka_gui import iptvkaWindow
 
-dir_from = os.path.dirname(__file__)
+dir_from = os.path.realpath(os.path.dirname(__file__))
 
 if len(sys.argv) > 1:
     f_cfg = sys.argv[1]
@@ -16,7 +16,7 @@ try:
     config.readfp(open(f_cfg))
     dir_from = str(config.get("general", "dir_from"))
     if dir_from == ".":
-        dir_from = os.path.dirname(__file__)
+        dir_from = os.path.realpath(os.path.dirname(__file__))
 except:
     pass
 
