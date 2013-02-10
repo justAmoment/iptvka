@@ -1,3 +1,4 @@
 .gitignore
 *.pyc
 tmp/*
+m3u/test*
