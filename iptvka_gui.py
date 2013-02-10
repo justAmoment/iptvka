@@ -209,7 +209,7 @@ class iptvkaWindow(Gtk.Window):
         dir_from = self.iptvka.dir_from
         dir_prov = self.iptvka.dir_prov
         dlg1 = Gtk.MessageDialog(self, 0, Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, "Save channels to source dir?")
-        dlg1.format_secondary_text("dir = %s\nch = %s" % (dir_from, len(self.lsts)))
+        dlg1.format_secondary_text("dir = %s\nch = %s" % (join(dir_from, dir_prov), len(self.lsts)))
         response = dlg1.run()
         dlg1.hide()
         if response == Gtk.ResponseType.YES:
@@ -247,7 +247,7 @@ class iptvkaWindow(Gtk.Window):
             else:
                 msg2 = "Partial success %.02f%%" % (100.00 * n_ok / len(self.lsts))
             dlg2 = Gtk.MessageDialog(self, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, msg2)
-            dlg2.format_secondary_text("dir = %s\n(%s from %s) channels saved" % (dir_from, n_ok, len(self.lsts)))
+            dlg2.format_secondary_text("dir = %s\n(%s from %s) channels saved" % (join(dir_from, dir_prov), n_ok, len(self.lsts)))
             dlg2.run()
             dlg2.hide()
         else:
@@ -258,14 +258,13 @@ class iptvkaWindow(Gtk.Window):
         dir_from = self.iptvka.dir_from
         dir_format = self.iptvka.dir_format
         dir_m3u = self.iptvka.dir_m3u
-
-        h = open(join(dir_from, dir_format, "head"), "r").read()
+        tps = self.iptvka.tps
+        h = self.iptvka.h
 
         L = self.lsts
         Lnr = len(L)
         text_m3u = str(h)
         tm = {}
-        tps = ["igmp", "udpxy"]
         for tp in tps:
             p = open(join(dir_format, "prefix_ip_" + tp), "r").read()
 
@@ -303,6 +302,11 @@ class iptvkaWindow(Gtk.Window):
                     pass
             else:
                 print "Error: channel %s not saved, realpath '%s' not equal dir '%s'." % (nx, os.path.realpath(dir1), dir1)
+        msg2 = "Done"
+        dlg2 = Gtk.MessageDialog(self, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, msg2)
+        dlg2.format_secondary_text("dir = %s\n%s playlists (*.m3u) saved" % (dir1, n_ok))
+        dlg2.run()
+        dlg2.hide()
 
     def reload_ip_from_dir(self):
         """Get ip/port/name/params from source dirs and set it to listview."""
