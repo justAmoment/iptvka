@@ -266,10 +266,11 @@ class iptvkaWindow(Gtk.Window):
         text_m3u = str(h)
         tm = {}
         for tp in tps:
-            p = open(join(dir_format, "prefix_ip_" + tp), "r").read()
-
             for r in range(Lnr):
-                ip_pre = p
+                if tp in self.iptvka.ip_pre:
+                    ip_pre = self.iptvka.ip_pre[tp]
+                else:
+                    ip_pre = ""
                 nx, prov, ip1234, port, name, demux, stb, extvlc = L[r][:]
                 ip4 = str(int(ip1234.rsplit(".",1)[-1]))
                 if demux:

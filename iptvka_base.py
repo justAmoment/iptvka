@@ -12,6 +12,7 @@ class iptvkaBase():
     dir_tag = "tag"
     f_cfg = "iptvka.cfg"
     tps = ["igmp", "udpxy"]
+    ip_pre = {}
     h = "#EXTM3U"
     tl = []
     ta = {}
@@ -40,6 +41,13 @@ class iptvkaBase():
             try: self.dir_m3u = str(config.get("general", "dir_m3u"))
             except: pass
             try: self.dir_tag = str(config.get("general", "dir_tag"))
+            except: pass
+            try:
+                tps_x = str(config.get("general", "tps"))
+                tps_x = [x for x in tps_x.split("\n") if x]
+                self.tps = tps_x
+                for tp in tps_x:
+                    self.ip_pre[tp] = open(join(self.dir_from, self.dir_format, "prefix_ip_" + tp), "r").read()
             except: pass
         except:
             pass
