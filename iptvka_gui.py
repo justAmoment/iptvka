@@ -293,7 +293,7 @@ class iptvkaWindow(Gtk.Window):
 
                 try:
                     if os.path.isdir(dir1):
-                        fn1 = join(dir_from, dir_m3u, "test_" + prov + "_" + tp + "_all.m3u")
+                        fn1 = join(dir_from, dir_m3u, "iptv_" + prov + "_" + tp + "_all.m3u")
                         f1 = open(fn1, "w")
                         f1.writelines(tm[(tp, prov)])
                         f1.close()
