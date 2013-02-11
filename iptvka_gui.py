@@ -276,7 +276,7 @@ class iptvkaWindow(Gtk.Window):
                     ip_pre = ip_pre.replace(":", "/" + demux + ":", 1)
                 if (tp, prov) not in tm:
                     tm[(tp, prov)] = str(h)
-                tm[(tp, prov)] += "#EXTINF:-1, %s -- %s\n" % (ip4, name)
+                tm[(tp, prov)] += "#EXTINF:-1, %s -- %s%s\n" % (ip4, name, self.iptvka.in_tags(prov + "." + port + "." + ip1234))
                 if extvlc:
                     tm[(tp, prov)] += "#EXTVLCOPT:%s\n" % (extvlc)
                 tm[(tp, prov)] += "%s%s:%s\n" % (ip_pre, ip1234, port)
