@@ -28,16 +28,21 @@ class iptvkaBase():
         config = ConfigParser.ConfigParser()
         try:
             config.readfp(open(self.f_cfg))
-            self.dir_from = str(config.get("general", "dir_from"))
-            if self.dir_from == ".":
-                self.dir_from = os.path.realpath(os.path.dirname(__file__))
-            self.dir_prov = str(config.get("general", "dir_prov"))
-            self.dir_format = str(config.get("general", "dir_format"))
-            self.dir_m3u = str(config.get("general", "dir_m3u"))
+            try:
+                self.dir_from = str(config.get("general", "dir_from"))
+                if self.dir_from == ".":
+                    self.dir_from = os.path.realpath(os.path.dirname(__file__))
+            except: pass
+            try: self.dir_prov = str(config.get("general", "dir_prov"))
+            except: pass
+            try: self.dir_format = str(config.get("general", "dir_format"))
+            except: pass
+            try: self.dir_m3u = str(config.get("general", "dir_m3u"))
+            except: pass
+            try: self.dir_tag = str(config.get("general", "dir_tag"))
+            except: pass
         except:
             pass
-        try: self.dir_tag = str(config.get("general", "dir_tag"))
-        except: pass
         try: self.h = open(join(self.dir_from, self.dir_format, "head"), "r").read()
         except: pass
         try: self.t_pre = open(join(self.dir_from, self.dir_format, "tag_prefix"), "r").read()
