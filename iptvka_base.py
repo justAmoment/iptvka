@@ -46,16 +46,17 @@ class iptvkaBase():
                 tps_x = str(config.get("general", "tps"))
                 tps_x = [x for x in tps_x.split("\n") if x]
                 self.tps = tps_x
-                for tp in tps_x:
-                    self.ip_pre[tp] = open(join(self.dir_from, self.dir_format, "prefix_ip_" + tp), "r").read()
             except: pass
-        except:
-            pass
+        except: pass
         try: self.h = open(join(self.dir_from, self.dir_format, "head"), "r").read()
         except: pass
         try: self.t_pre = open(join(self.dir_from, self.dir_format, "tag_prefix"), "r").read()
         except: pass
         try: self.t_post = open(join(self.dir_from, self.dir_format, "tag_postfix"), "r").read()
+        except: pass
+        try:
+            for tp in self.tps:
+                self.ip_pre[tp] = open(join(self.dir_from, self.dir_format, "prefix_ip_" + tp), "r").read()
         except: pass
         try:
             # Fill tag array
@@ -66,8 +67,7 @@ class iptvkaBase():
                 for tt in [x.strip() for x in open(join(self.dir_from, self.dir_tag, t), "r").readlines() if not x.isspace()]:
                     if tt:
                         self.ta[t].append(tt)
-        except:
-            pass
+        except: pass
 
     def in_tags(self, ip):
         """Return string of {tags} where 'ip' is in 'ta'.
