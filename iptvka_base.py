@@ -92,3 +92,34 @@ class iptvkaBase():
             if ip in self.ta[z]:
                 ret += self.t_pre + str(z) + self.t_post
         return ret
+
+    def reload_ip_from_dir(self):
+        """Get ip/port/name/params from source dirs and set it to listview."""
+        dir_from = self.dir_from
+        dir_prov = self.dir_prov
+        dir_format = self.dir_format
+        L = self.lsts
+        need_n_lines = 4
+        h      = open(join(dir_from, dir_format, "head"),        "r").read()
+        t_pre  = open(join(dir_from, dir_format, "tag_prefix"),  "r").read()
+        t_post = open(join(dir_from, dir_format, "tag_postfix"), "r").read()
+        provs = os.listdir(join(dir_from, dir_prov))
+        provs.sort()
+        for prov in provs:
+            ports = os.listdir(join(dir_from, dir_prov, prov))
+            ports.sort(key=int)
+            for port in ports:
+                yy = os.listdir(join(dir_from, dir_prov, prov, port))
+                yy.sort()
+                for y in yy:
+                    ii = os.listdir(join(dir_from, dir_prov, prov, port, y))
+                    ii.sort(key=int)
+                    for i in ii:
+                        ip1234 = str(y) + "." + str(i)
+
+                        f1 = open(join(dir_from, dir_prov, prov, port, y, i), "r")
+                        s1 = [x.strip() for x in f1.readlines()]
+                        if len(s1) < need_n_lines:
+                            for x in range(len(s1), need_n_lines):
+                                s1.append("")
+                        L.append([str(len(L) + 1), prov, ip1234, port, s1[0], s1[1], s1[2], s1[3]])
