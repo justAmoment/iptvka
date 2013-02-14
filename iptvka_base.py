@@ -123,3 +123,32 @@ class iptvkaBase():
                             for x in range(len(s1), need_n_lines):
                                 s1.append("")
                         L.append([str(len(L) + 1), prov, ip1234, port, s1[0], s1[1], s1[2], s1[3]])
+
+    def compare(self, model, row1, row2, sort_val):
+        """Function is sorting rows in listview."""
+        ret = 0
+        try:
+            sort_column = model.get_sort_column_id()[0]
+            if sort_val == "int":
+                val1 = int(model.get_value(row1, sort_column))
+                val2 = int(model.get_value(row2, sort_column))
+                if   val1 < val2:   ret = -1
+                elif val1 > val2:   ret = 1
+
+            elif sort_val == "str":
+                val1 = model.get_value(row1, sort_column)
+                val2 = model.get_value(row2, sort_column)
+                if   val1 < val2:   ret = -1
+                elif val1 > val2:   ret = 1
+
+            elif sort_val == "ip4":
+                val1 = model.get_value(row1, sort_column)
+                val1 = [int(x) for x in val1.split(".")]
+                val2 = model.get_value(row2, sort_column)
+                val2 = [int(x) for x in val2.split(".")]
+                if   val1 < val2:   ret = -1
+                elif val1 > val2:   ret = 1
+        except:
+            pass
+
+        return ret
