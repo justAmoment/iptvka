@@ -2,6 +2,7 @@
 
 import ConfigParser, sys, os
 from os.path import join
+from gi.repository import Gtk
 
 class iptvkaBase():
     """Class stores inner vars, functions to interact with file system and inner vars."""
@@ -18,6 +19,19 @@ class iptvkaBase():
     ta = {}
     t_pre = "_"
     t_post = "_"
+
+    lsts = Gtk.ListStore(str, str, str, str, str, str, str, str)
+    x_title = ["#", "provider", "ip", "port", "name", "demux", "#STB", "#EXTVLCOPT"]
+    x_title_sort_val = {
+                    "#" : "int",
+             "provider" : "str",
+                   "ip" : "ip4",
+                 "port" : "int",
+                 "name" : "str",
+                "demux" : "str",
+                 "#STB" : "str",
+           "#EXTVLCOPT" : "str",
+                        }
 
     def __init__(self, dir_from):
         self.dir_from = dir_from

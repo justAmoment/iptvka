@@ -43,21 +43,6 @@ UI_INFO = """
 
 class iptvkaWindow(Gtk.Window):
     """Class store functions to interract with user. GUI / GTK / ListView / TreeView."""
-    lsts = Gtk.ListStore(str, str, str, str, str, str, str, str)
-    x_title = ["#", "provider", "ip", "port", "name", "demux", "#STB", "#EXTVLCOPT"]
-    x_title_sort_val = {
-                    "#" : "int",
-             "provider" : "str",
-                   "ip" : "ip4",
-                 "port" : "int",
-                 "name" : "str",
-                "demux" : "str",
-                 "#STB" : "str",
-           "#EXTVLCOPT" : "str",
-                        }
-    trvw1 = Gtk.TreeView(model=lsts)
-    swnd1 = Gtk.ScrolledWindow()
-    swnd1.add(trvw1)
     sbar = Gtk.Statusbar()
     sbar_id = sbar.get_context_id("sbar1")
 
@@ -70,6 +55,11 @@ class iptvkaWindow(Gtk.Window):
         new_y = int((Gdk.Screen.height() - new_h) / 2)
         self.set_default_size(new_w, new_h)
         self.move(new_x, new_y)
+
+        self.trvw1 = Gtk.TreeView(model=self.iptvka.lsts)
+        self.swnd1 = Gtk.ScrolledWindow()
+        self.swnd1.add(self.trvw1)
+
         action_group = Gtk.ActionGroup("my_actions")
 
         self.add_file_menu_actions(action_group)
@@ -87,11 +77,11 @@ class iptvkaWindow(Gtk.Window):
         toolbar = uimanager.get_widget("/ToolBar")
         box.pack_start(toolbar, False, False, 0)
 
-        for x_col in range(len(self.x_title)):
-            column = Gtk.TreeViewColumn(self.x_title[x_col], Gtk.CellRendererText(), text=x_col)
+        for x_col in range(len(self.iptvka.x_title)):
+            column = Gtk.TreeViewColumn(self.iptvka.x_title[x_col], Gtk.CellRendererText(), text=x_col)
             column.set_sort_column_id(x_col)
             self.trvw1.append_column(column)
-            self.lsts.set_sort_func(x_col, self.compare, self.x_title_sort_val[self.x_title[x_col]])
+            self.iptvka.lsts.set_sort_func(x_col, self.compare, self.iptvka.x_title_sort_val[self.iptvka.x_title[x_col]])
 
         self.reload_ip_from_dir()
         self.update_sbar("stat")
@@ -196,12 +186,12 @@ class iptvkaWindow(Gtk.Window):
         abtd.hide()
 
     def on_menu_filerefresh(self, widget):
-        self.lsts.clear()
+        self.iptvka.lsts.clear()
         self.reload_ip_from_dir()
         self.update_sbar("stat")
 
     def on_menu_fileclear(self, widget):
-        self.lsts.clear()
+        self.iptvka.lsts.clear()
         self.update_sbar("stat")
 
     def on_menu_filesave(self, widget):
@@ -209,11 +199,11 @@ class iptvkaWindow(Gtk.Window):
         dir_from = self.iptvka.dir_from
         dir_prov = self.iptvka.dir_prov
         dlg1 = Gtk.MessageDialog(self, 0, Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, "Save channels to source dir?")
-        dlg1.format_secondary_text("dir = %s\nch = %s" % (join(dir_from, dir_prov), len(self.lsts)))
+        dlg1.format_secondary_text("dir = %s\nch = %s" % (join(dir_from, dir_prov), len(self.iptvka.lsts)))
         response = dlg1.run()
         dlg1.hide()
         if response == Gtk.ResponseType.YES:
-            L = self.lsts
+            L = self.iptvka.lsts
             Lnr = len(L)
             n_ok = 0
             for r in range(Lnr):
@@ -242,12 +232,12 @@ class iptvkaWindow(Gtk.Window):
                 else:
                     print "Error: channel %s not saved, realpath '%s' not equal dir '%s'." % (nx, os.path.realpath(dir1), dir1)
 
-            if n_ok == len(self.lsts):
+            if n_ok == len(self.iptvka.lsts):
                 msg2 = "Success 100%"
             else:
                 msg2 = "Partial success %.02f%%" % (100.00 * n_ok / len(self.lsts))
             dlg2 = Gtk.MessageDialog(self, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, msg2)
-            dlg2.format_secondary_text("dir = %s\n(%s from %s) channels saved" % (join(dir_from, dir_prov), n_ok, len(self.lsts)))
+            dlg2.format_secondary_text("dir = %s\n(%s from %s) channels saved" % (join(dir_from, dir_prov), n_ok, len(self.iptvka.lsts)))
             dlg2.run()
             dlg2.hide()
         else:
@@ -261,7 +251,7 @@ class iptvkaWindow(Gtk.Window):
         tps = self.iptvka.tps
         h = self.iptvka.h
 
-        L = self.lsts
+        L = self.iptvka.lsts
         Lnr = len(L)
         text_m3u = str(h)
         tm = {}
@@ -337,11 +327,11 @@ class iptvkaWindow(Gtk.Window):
                         if len(s1) < need_n_lines:
                             for x in range(len(s1), need_n_lines):
                                 s1.append("")
-                        self.lsts.append([str(len(self.lsts) + 1), prov, ip1234, port, s1[0], s1[1], s1[2], s1[3]])
+                        self.iptvka.lsts.append([str(len(self.iptvka.lsts) + 1), prov, ip1234, port, s1[0], s1[1], s1[2], s1[3]])
 
     def update_sbar(self, act = "clear"):
         """Update statusbar (act = 'clear' | 'stat')."""
-        L = self.lsts
+        L = self.iptvka.lsts
         Lnc = L.get_n_columns()
         Lnr = len(L)
         S = self.sbar
@@ -352,7 +342,7 @@ class iptvkaWindow(Gtk.Window):
         elif act == "stat":
             for c in range(Lnc):
                 d = len(list(set([L[r][c] for r in range(Lnr) if L[r][c]])))
-                u += self.x_title[c] + " = " + str(d) + "   |   "
+                u += self.iptvka.x_title[c] + " = " + str(d) + "   |   "
         S.push(S_id, u)
 
     def compare(self, model, row1, row2, sort_val):
