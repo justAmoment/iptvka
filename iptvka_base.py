@@ -21,13 +21,15 @@ class iptvkaBase():
     t_pre = "_"
     t_post = "_"
 
-    lsts = Gtk.ListStore(str, str, str, str, str, str, str, str)
-    x_title = ["#", "provider", "ip", "port", "name", "demux", "#STB", "#EXTVLCOPT"]
+    lsts = Gtk.ListStore(str, str, str, str, str, str, str, str, str, str)
+    x_title = ["#", "provider", "ip", "port", "tag", "list", "name", "demux", "#STB", "#EXTVLCOPT"]
     x_title_sort_val = {
                     "#" : "int",
              "provider" : "str",
                    "ip" : "ip4",
                  "port" : "int",
+                  "tag" : "str",
+                 "list" : "str",
                  "name" : "str",
                 "demux" : "str",
                  "#STB" : "str",
@@ -125,7 +127,9 @@ class iptvkaBase():
                         if len(s1) < need_n_lines:
                             for x in range(len(s1), need_n_lines):
                                 s1.append("")
-                        L.append([str(len(L) + 1), prov, ip1234, port, s1[0], s1[1], s1[2], s1[3]])
+                        tag_x = self.in_tags(prov + "." + port + "." + ip1234)
+                        list_x = ""
+                        L.append([str(len(L) + 1), prov, ip1234, port, tag_x, list_x, s1[0], s1[1], s1[2], s1[3]])
 
     def compare(self, model, row1, row2, sort_val):
         """Function is sorting rows in listview."""

@@ -207,7 +207,7 @@ class iptvkaWindow(Gtk.Window):
         n_ok = 0
         if response == Gtk.ResponseType.YES:
             for r in range(Lnr):
-                nx, prov, ip1234, port, name, demux, stb, extvlc = L[r][:]
+                nx, prov, ip1234, port, tag_x, list_x, name, demux, stb, extvlc = L[r][:]
                 ip1234 = [str(int(x)) for x in ip1234.split(".")]
                 ip123 = ".".join(ip1234[:-1])
                 ip4 = ip1234[-1]
@@ -261,7 +261,7 @@ class iptvkaWindow(Gtk.Window):
                     ip_pre = self.iptvka.ip_pre[tp]
                 else:
                     ip_pre = ""
-                nx, prov, ip1234, port, name, demux, stb, extvlc = L[r][:]
+                nx, prov, ip1234, port, tag_x, list_x, name, demux, stb, extvlc = L[r][:]
                 ip4 = str(int(ip1234.rsplit(".",1)[-1]))
                 if demux:
                     ip_pre = ip_pre.replace(":", "/" + demux + ":", 1)
