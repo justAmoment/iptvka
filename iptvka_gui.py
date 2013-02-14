@@ -48,6 +48,7 @@ class iptvkaWindow(Gtk.Window):
 
     def __init__(self, iptvka):
         self.iptvka = iptvka
+        L = self.iptvka.lsts
         Gtk.Window.__init__(self, title="iptvka")
         new_w = int(Gdk.Screen.width() * 3/4)
         new_h = int(Gdk.Screen.height() * 3/4)
@@ -56,7 +57,7 @@ class iptvkaWindow(Gtk.Window):
         self.set_default_size(new_w, new_h)
         self.move(new_x, new_y)
 
-        self.trvw1 = Gtk.TreeView(model=self.iptvka.lsts)
+        self.trvw1 = Gtk.TreeView(model=L)
         self.swnd1 = Gtk.ScrolledWindow()
         self.swnd1.add(self.trvw1)
 
@@ -81,7 +82,7 @@ class iptvkaWindow(Gtk.Window):
             column = Gtk.TreeViewColumn(self.iptvka.x_title[x_col], Gtk.CellRendererText(), text=x_col)
             column.set_sort_column_id(x_col)
             self.trvw1.append_column(column)
-            self.iptvka.lsts.set_sort_func(x_col, self.compare, self.iptvka.x_title_sort_val[self.iptvka.x_title[x_col]])
+            L.set_sort_func(x_col, self.compare, self.iptvka.x_title_sort_val[self.iptvka.x_title[x_col]])
 
         self.reload_ip_from_dir()
         self.update_sbar("stat")
@@ -198,14 +199,14 @@ class iptvkaWindow(Gtk.Window):
         """Save ip/port/name/params from listview to source dirs."""
         dir_from = self.iptvka.dir_from
         dir_prov = self.iptvka.dir_prov
+        L = self.iptvka.lsts
+        Lnr = len(L)
         dlg1 = Gtk.MessageDialog(self, 0, Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, "Save channels to source dir?")
-        dlg1.format_secondary_text("dir = %s\nch = %s" % (join(dir_from, dir_prov), len(self.iptvka.lsts)))
+        dlg1.format_secondary_text("dir = %s\nch = %s" % (join(dir_from, dir_prov), Lnr))
         response = dlg1.run()
         dlg1.hide()
+        n_ok = 0
         if response == Gtk.ResponseType.YES:
-            L = self.iptvka.lsts
-            Lnr = len(L)
-            n_ok = 0
             for r in range(Lnr):
                 nx, prov, ip1234, port, name, demux, stb, extvlc = L[r][:]
                 ip1234 = [str(int(x)) for x in ip1234.split(".")]
@@ -232,12 +233,12 @@ class iptvkaWindow(Gtk.Window):
                 else:
                     print "Error: channel %s not saved, realpath '%s' not equal dir '%s'." % (nx, os.path.realpath(dir1), dir1)
 
-            if n_ok == len(self.iptvka.lsts):
+            if n_ok == Lnr:
                 msg2 = "Success 100%"
             else:
-                msg2 = "Partial success %.02f%%" % (100.00 * n_ok / len(self.lsts))
+                msg2 = "Partial success %.02f%%" % (100.00 * n_ok / Lnr)
             dlg2 = Gtk.MessageDialog(self, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, msg2)
-            dlg2.format_secondary_text("dir = %s\n(%s from %s) channels saved" % (join(dir_from, dir_prov), n_ok, len(self.iptvka.lsts)))
+            dlg2.format_secondary_text("dir = %s\n(%s from %s) channels saved" % (join(dir_from, dir_prov), n_ok, Lnr))
             dlg2.run()
             dlg2.hide()
         else:
@@ -305,6 +306,7 @@ class iptvkaWindow(Gtk.Window):
         dir_from = self.iptvka.dir_from
         dir_prov = self.iptvka.dir_prov
         dir_format = self.iptvka.dir_format
+        L = self.iptvka.lsts
         need_n_lines = 4
         h      = open(join(dir_from, dir_format, "head"),        "r").read()
         t_pre  = open(join(dir_from, dir_format, "tag_prefix"),  "r").read()
@@ -328,7 +330,7 @@ class iptvkaWindow(Gtk.Window):
                         if len(s1) < need_n_lines:
                             for x in range(len(s1), need_n_lines):
                                 s1.append("")
-                        self.iptvka.lsts.append([str(len(self.iptvka.lsts) + 1), prov, ip1234, port, s1[0], s1[1], s1[2], s1[3]])
+                        L.append([str(len(L) + 1), prov, ip1234, port, s1[0], s1[1], s1[2], s1[3]])
 
     def update_sbar(self, act = "clear"):
         """Update statusbar (act = 'clear' | 'stat')."""
