@@ -255,6 +255,7 @@ class iptvkaWindow(Gtk.Window):
         Lnr = len(L)
         text_m3u = str(h)
         tm = {}
+        raw = self.iptvka.raw
         for tp in tps:
             for r in range(Lnr):
                 if tp in self.iptvka.ip_pre:
@@ -267,9 +268,9 @@ class iptvkaWindow(Gtk.Window):
                     ip_pre = ip_pre.replace(":", "/" + demux + ":", 1)
                 if (tp, prov) not in tm:
                     tm[(tp, prov)] = str(h)
-                tm[(tp, prov)] += "#EXTINF:-1, %s -- %s%s\n" % (ip4, name, self.iptvka.in_tags(prov + "." + port + "." + ip1234))
-                if extvlc:
-                    tm[(tp, prov)] += "#EXTVLCOPT:%s\n" % (extvlc)
+                tm[(tp, prov)] += "%s, %s -- %s%s\n" % (raw[0], ip4, name, self.iptvka.in_tags(prov + "." + port + "." + ip1234))
+                for e in extvlc.split():
+                    tm[(tp, prov)] += "%s%s\n" % (raw[1], e)
                 tm[(tp, prov)] += "%s%s:%s\n" % (ip_pre, ip1234, port)
         n_ok = 0
         dir1 = ""

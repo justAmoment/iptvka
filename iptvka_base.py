@@ -16,6 +16,8 @@ class iptvkaBase():
     tps = ["igmp", "udpxy"]
     ip_pre = {}
     h = "#EXTM3U"
+    need_raw_lines = 2
+    raw = ["#EXTINF:-1", "#EXTVLCOPT:"]
     tl = []
     ta = {}
     t_pre = "_"
@@ -68,6 +70,11 @@ class iptvkaBase():
             except: pass
         except: pass
         try: self.h = open(join(self.dir_from, self.dir_format, "head"), "r").read()
+        except: pass
+        try:
+            raw_x = [x.strip("\n") for x in open(join(self.dir_from, self.dir_format, "raw"), "r").readlines()]
+            for i in range(min(self.need_raw_lines, len(raw_x))):
+                self.raw[i] = raw_x[i]
         except: pass
         try: self.t_pre = open(join(self.dir_from, self.dir_format, "tag_prefix"), "r").read()
         except: pass
