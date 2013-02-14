@@ -272,6 +272,7 @@ class iptvkaWindow(Gtk.Window):
                     tm[(tp, prov)] += "#EXTVLCOPT:%s\n" % (extvlc)
                 tm[(tp, prov)] += "%s%s:%s\n" % (ip_pre, ip1234, port)
         n_ok = 0
+        dir1 = ""
         for (tp, prov) in tm:
             # Check problem with realpath
             dir1 = join(dir_from, dir_m3u)
