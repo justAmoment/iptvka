@@ -4,7 +4,7 @@ import ConfigParser, sys, os
 from os.path import join
 from gi.repository import Gtk
 
-class iptvkaBase():
+class iptvkaCore():
     """Class stores inner vars, functions to interact with file system and inner vars."""
     dir_from = "."
     dir_prov = "provider"
