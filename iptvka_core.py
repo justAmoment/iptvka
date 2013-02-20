@@ -22,6 +22,10 @@ class iptvkaCore():
     ta = {}
     t_pre = "_"
     t_post = "_"
+    ll = []
+    la = {}
+    l_pre = "_"
+    l_post = "_"
 
     lsts = Gtk.ListStore(str, str, str, str, str, str, str, str, str, str)
     x_title = ["#", "provider", "ip", "port", "tag", "list", "name", "demux", "#STB", "#EXTVLCOPT"]
@@ -94,6 +98,16 @@ class iptvkaCore():
                     if tt:
                         self.ta[t].append(tt)
         except: pass
+        try:
+            # Fill list array
+            self.ll = os.listdir(join(self.dir_from, self.dir_list))
+            self.ll.sort()
+            for l in self.ll:
+                self.la[l] = []
+                for i in [x.strip() for x in open(join(self.dir_from, self.dir_list, l), "r").readlines() if not x.isspace()]:
+                    if i:
+                        self.la[l].append(i)
+        except: pass
 
     def in_tags(self, ip):
         """Return string of {tags} where 'ip' is in 'ta'.
@@ -103,6 +117,16 @@ class iptvkaCore():
         for z in self.tl:
             if ip in self.ta[z]:
                 ret += self.t_pre + str(z) + self.t_post
+        return ret
+
+    def in_lists(self, ip):
+        """Return string of lists where 'ip' is in 'la'.
+        'la' - dict with key='list', val = list of 'ip'.
+        la = {list1: [ip1, ip2], list2: [ip1, ip3]}"""
+        ret = ""
+        for z in self.ll:
+            if ip in self.la[z]:
+                ret += self.l_pre + str(z) + self.l_post
         return ret
 
     def reload_ip_from_dir(self):
@@ -135,7 +159,7 @@ class iptvkaCore():
                             for x in range(len(s1), need_n_lines):
                                 s1.append("")
                         tag_x = self.in_tags(prov + "." + port + "." + ip1234)
-                        list_x = ""
+                        list_x = self.in_lists(prov + "." + port + "." + ip1234)
                         L.append([str(len(L) + 1), prov, ip1234, port, tag_x, list_x, s1[0], s1[1], s1[2], s1[3]])
 
     def compare(self, model, row1, row2, sort_val):
