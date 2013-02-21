@@ -249,13 +249,19 @@ class iptvkaWindow(Gtk.Window):
         dir_format = self.iptvka.dir_format
         dir_m3u = self.iptvka.dir_m3u
         tps = self.iptvka.tps
-        h = self.iptvka.h
-
+        h = str(self.iptvka.h)
         L = self.iptvka.lsts
         Lnr = len(L)
-        text_m3u = str(h)
-        tm = {}
+        LA = self.iptvka.la
+        LL = self.iptvka.ll
         raw = self.iptvka.raw
+        # tm{} temporary stores completed playlists for key (tp, prov, list)
+        tm = {}
+        # tp_prov{} temporary stores pair (tp, prov)
+        tp_prov = {}
+        # ma{} temporary stores all records for all IP
+        ma = {}
+
         for tp in tps:
             for r in range(Lnr):
                 if tp in self.iptvka.ip_pre:
@@ -264,37 +270,57 @@ class iptvkaWindow(Gtk.Window):
                     ip_pre = ""
                 nx, prov, ip1234, port, tag_x, list_x, name, demux, stb, extvlc = L[r][:]
                 ip4 = str(int(ip1234.rsplit(".",1)[-1]))
+                zx = prov + "." + port + "." + ip1234
                 if demux:
                     ip_pre = ip_pre.replace(":", "/" + demux + ":", 1)
-                if (tp, prov) not in tm:
-                    tm[(tp, prov)] = str(h)
-                tm[(tp, prov)] += "%s, %s -- %s%s\n" % (raw[0], ip4, name, self.iptvka.in_tags(prov + "." + port + "." + ip1234))
+                if (tp, prov, "all") not in tm:
+                    tm[(tp, prov, "all")] = h
+                    tp_prov[(tp, prov)] = 1
+                ma[(tp,zx)] = ("%s, %s -- %s%s\n" % (raw[0], ip4, name, self.iptvka.in_tags(zx)))
                 for e in extvlc.split():
-                    tm[(tp, prov)] += "%s%s\n" % (raw[1], e)
-                tm[(tp, prov)] += "%s%s:%s\n" % (ip_pre, ip1234, port)
+                    ma[(tp,zx)] += "%s%s\n" % (raw[1], e)
+                ma[(tp,zx)] += "%s%s:%s\n" % (ip_pre, ip1234, port)
+                tm[(tp, prov, "all")] += ma[(tp,zx)]
         n_ok = 0
         dir1 = ""
-        for (tp, prov) in tm:
-            # Check problem with realpath
-            dir1 = join(dir_from, dir_m3u)
-            if dir1 == os.path.realpath(dir1):
-                try:
-                    if not os.path.exists(dir1):
-                        os.makedirs(dir1)
-                except:
-                    pass
-
+        dir1 = join(dir_from, dir_m3u)
+        # Check problem with realpath
+        if dir1 == os.path.realpath(dir1):
+            try:
+                if not os.path.exists(dir1):
+                    os.makedirs(dir1)
+            except: pass
+            for (tp, prov) in tp_prov:
+                # Generate all lists
                 try:
                     if os.path.isdir(dir1):
                         fn1 = join(dir_from, dir_m3u, "iptv_" + prov + "_" + tp + "_all.m3u")
-                        f1 = open(fn1, "w")
-                        f1.writelines(tm[(tp, prov)])
-                        f1.close()
-                        n_ok += 1
-                except:
-                    pass
-            else:
-                print "Error: channel %s not saved, realpath '%s' not equal dir '%s'." % (nx, os.path.realpath(dir1), dir1)
+                        if fn1 == os.path.realpath(fn1):
+                            f1 = open(fn1, "w")
+                            f1.writelines(tm[(tp, prov, "all")])
+                            f1.close()
+                            n_ok += 1
+                        else:
+                            print "Error: playlist not saved, realpath '%s' not equal file '%s'." % (os.path.realpath(fn1), fn1)
+                except: pass
+                # Generate special lists
+                try:
+                    for zl in LL:
+                        try:
+                            for zx in LA[zl]:
+                                if (tp, prov, zl) not in tm:
+                                    tm[(tp, prov, zl)] = h
+                                tm[(tp, prov, zl)] += ma[(tp,zx)]
+                            fn2 = join(dir_from, dir_m3u, "iptv_" + prov + "_" + tp + "_" + zl + ".m3u")
+                            if fn2 == os.path.realpath(fn2):
+                                f2 = open(fn2, "w")
+                                f2.writelines(tm[(tp, prov, zl)])
+                                f2.close()
+                                n_ok += 1
+                            else:
+                                print "Error: playlist not saved, realpath '%s' not equal file '%s'." % (os.path.realpath(fn2), fn2)
+                        except: pass
+                except: pass
         msg2 = "Done"
         dlg2 = Gtk.MessageDialog(self, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, msg2)
         dlg2.format_secondary_text("dir = %s\n%s playlists (*.m3u) saved" % (dir1, n_ok))
