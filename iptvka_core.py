@@ -158,8 +158,9 @@ class iptvkaCore():
                         if len(s1) < need_n_lines:
                             for x in range(len(s1), need_n_lines):
                                 s1.append("")
-                        tag_x = self.in_tags(prov + "." + port + "." + ip1234)
-                        list_x = self.in_lists(prov + "." + port + "." + ip1234)
+                        zx = prov + "." + port + "." + ip1234
+                        tag_x = self.in_tags(zx)
+                        list_x = self.in_lists(zx)
                         L.append([str(len(L) + 1), prov, ip1234, port, tag_x, list_x, s1[0], s1[1], s1[2], s1[3]])
 
     def compare(self, model, row1, row2, sort_val):
@@ -186,7 +187,5 @@ class iptvkaCore():
                 val2 = [int(x) for x in val2.split(".")]
                 if   val1 < val2:   ret = -1
                 elif val1 > val2:   ret = 1
-        except:
-            pass
-
+        except: pass
         return ret

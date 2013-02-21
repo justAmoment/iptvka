@@ -217,9 +217,7 @@ class iptvkaWindow(Gtk.Window):
                     try:
                         if not os.path.exists(dir1):
                             os.makedirs(dir1)
-                    except:
-                        pass
-
+                    except: pass
                     try:
                         if os.path.isdir(dir1):
                             fn1 = join(dir_from, dir_prov, prov, port, ip123, ip4)
@@ -227,11 +225,9 @@ class iptvkaWindow(Gtk.Window):
                             f1.writelines("\n".join(L[r][-4:]))
                             f1.close()
                             n_ok += 1
-                    except:
-                        pass
+                    except: pass
                 else:
                     print "Error: channel %s not saved, realpath '%s' not equal dir '%s'." % (nx, os.path.realpath(dir1), dir1)
-
             if n_ok == Lnr:
                 msg2 = "Success 100%"
             else:
