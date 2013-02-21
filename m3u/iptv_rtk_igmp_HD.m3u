@@ -1,47 +1,47 @@
 #EXTM3U
-#EXTINF:-1, 125 -- Mezzo Live HD {HD}
+#EXTINF:-1, 125 -- Mezzo Live HD {HD} {music}
 #EXTVLCOPT:network-caching=3000
 udp://@233.7.70.125:5000
-#EXTINF:-1, 126 -- Sony {HD} {cinema} {fav1}
+#EXTINF:-1, 126 -- SET HD {HD} {cinema} {fav1}
 #EXTVLCOPT:network-caching=3000
 udp://@233.7.70.126:5000
 #EXTINF:-1, 127 -- Fox HD {HD} {cinema} {fav1}
 #EXTVLCOPT:network-caching=3000
 udp://@233.7.70.127:5000
-#EXTINF:-1, 128 -- TV1000 Megahit HD {HD}
+#EXTINF:-1, 128 -- TV1000 Megahit HD {HD} {cinema}
 #EXTVLCOPT:network-caching=3000
 udp://@233.7.70.128:5000
-#EXTINF:-1, 129 -- TV1000 Premium HD {HD}
+#EXTINF:-1, 129 -- TV1000 Premium HD {HD} {cinema}
 #EXTVLCOPT:network-caching=3000
 udp://@233.7.70.129:5000
-#EXTINF:-1, 130 -- TV1000 Comedy HD {HD}
+#EXTINF:-1, 130 -- TV1000 Comedy HD {HD} {cinema}
 #EXTVLCOPT:network-caching=3000
 udp://@233.7.70.130:5000
-#EXTINF:-1, 131 -- Спорт 1 HD {HD} {sport}
+#EXTINF:-1, 131 -- Спорт 1 HD {HD} {fav1} {sport}
 #EXTVLCOPT:network-caching=3000
 udp://@233.7.70.131:5000
-#EXTINF:-1, 132 -- Euro Sport HD {HD} {sport}
+#EXTINF:-1, 132 -- Euro Sport HD {HD} {fav1} {sport}
 #EXTVLCOPT:audio-track-id=2078
 #EXTVLCOPT:network-caching=3000
 udp://@233.7.70.132:5000
 #EXTINF:-1, 133 -- Nat Geo Wild HD {HD}
 #EXTVLCOPT:network-caching=3000
 udp://@233.7.70.133:5000
-#EXTINF:-1, 134 -- Nature HD {HD}
+#EXTINF:-1, 134 -- Viasat Nature HD {HD}
 #EXTVLCOPT:network-caching=3000
 udp://@233.7.70.134:5000
 #EXTINF:-1, 156 -- Travel+adventure {HD}
 udp://@233.7.70.156:5000
 #EXTINF:-1, 157 -- HD Life {HD}
 udp://@233.7.70.157:5000
-#EXTINF:-1, 158 -- Fox Life HD {HD} {fav1}
+#EXTINF:-1, 158 -- Fox Life HD {HD} {cinema} {fav1}
 udp://@233.7.70.158:5000
 #EXTINF:-1, 159 -- National Geographic HD {HD}
 udp://@233.7.70.159:5000
 #EXTINF:-1, 160 -- myZen.tv HD {HD}
 #EXTVLCOPT:audio-track-id=2077
 udp://@233.7.70.160:5000
-#EXTINF:-1, 161 -- MTV Live HD {HD}
+#EXTINF:-1, 161 -- MTV Live HD {HD} {music}
 udp://@233.7.70.161:5000
 #EXTINF:-1, 162 -- Fashion One HD {HD}
 udp://@233.7.70.162:5000
@@ -52,6 +52,11 @@ udp://@233.7.70.164:5000
 #EXTINF:-1, 198 -- Россия HD {HD}
 #EXTVLCOPT:network-caching=3000
 udp://@233.7.70.198:5000
+#EXTINF:-1, 200 -- Первый HD {HD}
+udp://@233.7.70.200:5000
+#EXTINF:-1, 201 -- Россия HD {HD}
+#EXTVLCOPT:network-caching=3000
+udp://@233.7.70.201:5000
 #EXTINF:-1, 225 -- Animal Planet HD {HD}
 udp://@233.7.70.225:5000
 #EXTINF:-1, 253 -- Discovery HD Showcase {HD}
