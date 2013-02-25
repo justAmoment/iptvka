@@ -89,6 +89,7 @@ class iptvkaWindow(Gtk.Window):
 
             column = Gtk.TreeViewColumn(xc, Gtk.CellRendererText(), text=x_col)
             column.set_sort_column_id(x_col)
+            column.set_resizable(True)
             self.trvw1.append_column(column)
             L.set_sort_func(x_col, self.iptvka.compare, self.iptvka.x_title_sort_val[xc][0])
 
