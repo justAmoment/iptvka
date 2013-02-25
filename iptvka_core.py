@@ -30,16 +30,16 @@ class iptvkaCore():
     lsts = Gtk.ListStore(str, str, str, str, str, str, str, str, str, str)
     x_title = ["#", "provider", "ip", "port", "tag", "list", "name", "demux", "#STB", "#EXTVLCOPT"]
     x_title_sort_val = {
-                    "#" : "int",
-             "provider" : "str",
-                   "ip" : "ip4",
-                 "port" : "int",
-                  "tag" : "str",
-                 "list" : "str",
-                 "name" : "str",
-                "demux" : "str",
-                 "#STB" : "str",
-           "#EXTVLCOPT" : "str",
+                    "#" : ["int", True],
+             "provider" : ["str", False],
+                   "ip" : ["ip4", True],
+                 "port" : ["int", False],
+                  "tag" : ["str", True],
+                 "list" : ["str", True],
+                 "name" : ["str", True],
+                "demux" : ["str", False],
+                 "#STB" : ["str", True],
+           "#EXTVLCOPT" : ["str", True],
                         }
 
     def __init__(self, dir_from):

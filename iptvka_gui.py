@@ -45,10 +45,12 @@ class iptvkaWindow(Gtk.Window):
     """Class store functions to interract with user. GUI / GTK / ListView / TreeView."""
     sbar = Gtk.Statusbar()
     sbar_id = sbar.get_context_id("sbar1")
+    btnT = []
 
     def __init__(self, iptvka):
         self.iptvka = iptvka
         L = self.iptvka.lsts
+        x_title = self.iptvka.x_title
         Gtk.Window.__init__(self, title="iptvka")
         new_w = int(Gdk.Screen.width() * 3/4)
         new_h = int(Gdk.Screen.height() * 3/4)
@@ -78,14 +80,24 @@ class iptvkaWindow(Gtk.Window):
         toolbar = uimanager.get_widget("/ToolBar")
         box.pack_start(toolbar, False, False, 0)
 
-        for x_col in range(len(self.iptvka.x_title)):
-            column = Gtk.TreeViewColumn(self.iptvka.x_title[x_col], Gtk.CellRendererText(), text=x_col)
+        box2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        box.pack_start(box2, False, False, 0)
+
+        btnT = self.btnT
+        for x_col in range(len(x_title)):
+            xc = x_title[x_col]
+
+            column = Gtk.TreeViewColumn(xc, Gtk.CellRendererText(), text=x_col)
             column.set_sort_column_id(x_col)
             self.trvw1.append_column(column)
-            L.set_sort_func(x_col, self.iptvka.compare, self.iptvka.x_title_sort_val[self.iptvka.x_title[x_col]])
+            L.set_sort_func(x_col, self.iptvka.compare, self.iptvka.x_title_sort_val[xc][0])
+
+            btnT.append(Gtk.ToggleButton(xc))
+            box2.pack_start(btnT[x_col], False, False, 0)
+            btnT[x_col].set_active((self.iptvka.x_title_sort_val[xc][1]))
+            btnT[x_col].connect("toggled", self.on_button_toggled, xc)
 
         self.iptvka.reload_ip_from_dir()
-        self.update_sbar("stat")
 
         #renderer_pixbuf = Gtk.CellRendererPixbuf()
         #column_pixbuf = Gtk.TreeViewColumn("Image", renderer_pixbuf, stock_id=1)
@@ -104,9 +116,15 @@ class iptvkaWindow(Gtk.Window):
         #self.popup = uimanager.get_widget("/PopupMenu")
 
         self.add(box)
+        self.update_trvw()
+        self.update_sbar("stat")
+
+    def on_button_toggled(self, button, name):
+        self.update_trvw()
+        self.update_sbar("stat")
 
     def add_file_menu_actions(self, action_group):
-        # menu 1
+        # menu 1 / toolbar 1
         action_filemenu = Gtk.Action("FileMenu", "File", None, None)
         action_group.add_action(action_filemenu)
 
@@ -126,7 +144,7 @@ class iptvkaWindow(Gtk.Window):
         action_filequit.connect("activate", self.on_menu_filequit)
         action_group.add_action(action_filequit)
 
-        # menu 2
+        # menu 2 / toolbar 1
         action_actionmenu = Gtk.Action("ActionMenu", "Action", None, None)
         action_group.add_action(action_actionmenu)
 
@@ -134,7 +152,7 @@ class iptvkaWindow(Gtk.Window):
         action_createallm3u.connect("activate", self.on_menu_createallm3u)
         action_group.add_action(action_createallm3u)
 
-        # menu 3
+        # menu 3 / toolbar 1
         action_helpmenu = Gtk.Action("HelpMenu", "Help", None, None)
         action_group.add_action(action_helpmenu)
 
@@ -323,18 +341,28 @@ class iptvkaWindow(Gtk.Window):
         dlg2.run()
         dlg2.hide()
 
+    def update_trvw(self):
+        """Update Gtk.TreeView. Set visibility of the columns"""
+        cr = range(len(self.btnT))
+        xx = self.trvw1.get_columns()
+        for c in cr:
+            xx[c].set_visible(self.btnT[c].get_active())
+
     def update_sbar(self, act = "clear"):
         """Update statusbar (act = 'clear' | 'stat')."""
         L = self.iptvka.lsts
         Lnc = L.get_n_columns()
         Lnr = len(L)
+        cr = range(min(Lnc, len(self.btnT)))
         S = self.sbar
         S_id = self.sbar_id
         u = "Uniq values:   "
         if act == "clear":
             S.push(S_id, "")
         elif act == "stat":
-            for c in range(Lnc):
-                d = len(list(set([L[r][c] for r in range(Lnr) if L[r][c]])))
-                u += self.iptvka.x_title[c] + " = " + str(d) + "   |   "
+            for c in cr:
+                name = self.iptvka.x_title[c]
+                if self.btnT[c].get_active():
+                    d = len(list(set([L[r][c] for r in range(Lnr) if L[r][c]])))
+                    u += name + " = " + str(d) + "   |   "
         S.push(S_id, u)
