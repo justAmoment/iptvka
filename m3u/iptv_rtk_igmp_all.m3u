@@ -346,8 +346,6 @@ udp://@233.7.70.190:5000
 udp://@233.7.70.191:5000
 #EXTINF:-1, 192 -- Discovery Investigations
 udp://@233.7.70.192:5000
-#EXTINF:-1, 195 -- ? absent ? ESPN
-udp://@233.7.70.195:5000
 #EXTINF:-1, 196 -- Europa Plus TV {fav1} {music}
 udp://@233.7.70.196:5000
 #EXTINF:-1, 197 -- Euro Sport News {sport}
