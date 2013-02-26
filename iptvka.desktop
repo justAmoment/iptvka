@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=iptvka
+Comment=Generate m3u playlists for iptv.
+Comment[ru]=Создать плейлисты (список каналов) для просмотра iptv в формате m3u.
+Categories=
+Icon=/usr/share/pixmaps/nobody.png
+Exec=/opt/iptvka/iptvka.py
+Type=Application
+Terminal=false
+Encoding=UTF-8
+GenericName=iptvka (iptv key assistant) - Generator m3u
+GenericName[ru]=iptvka (ключевой помощник iptv) - Генератор m3u
