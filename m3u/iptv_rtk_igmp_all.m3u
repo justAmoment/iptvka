@@ -166,9 +166,6 @@ udp://@233.7.70.81:5000
 udp://@233.7.70.82:5000
 #EXTINF:-1, 83 -- RU.TV {music}
 udp://@233.7.70.83:5000
-#EXTINF:-1, 84 -- SyFy {cinema} {fav1} {mpeg2 10sec}
-#EXTVLCOPT:network-caching=10000
-udp/ffmpeg://@233.7.70.84:5000
 #EXTINF:-1, 85 -- Fox Life {cinema}
 udp://@233.7.70.85:5000
 #EXTINF:-1, 86 -- Феникс+Кино {cinema}
