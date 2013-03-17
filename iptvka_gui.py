@@ -116,9 +116,48 @@ class iptvkaWindow(Gtk.Window):
 
         #self.popup = uimanager.get_widget("/PopupMenu")
 
+        self.trvw1.get_selection().connect("changed", self.on_changed)
+        self.trvw1.connect("row-activated", self.on_row_activated)
+
         self.add(box)
         self.update_trvw()
         self.update_sbar("stat")
+
+    def on_row_activated(self, trvw, row, c):
+        """Show the dialog for editing row."""
+        L = self.iptvka.lsts
+        x_title = self.iptvka.x_title
+
+        dlg = Gtk.Dialog("Edit row %s" % self.iptvka.lsts[row][0], self)
+        E = Gtk.ListStore(str, str)
+        trvw = Gtk.TreeView(model=E)
+        column = Gtk.TreeViewColumn("name", Gtk.CellRendererText(), text=0)
+        trvw.append_column(column)
+        column = Gtk.TreeViewColumn("value", Gtk.CellRendererText(), text=1)
+        trvw.append_column(column)
+        for x_col in range(len(x_title)):
+            xc = x_title[x_col]
+            E.append([xc, L[row][x_col]])
+        swnd = Gtk.ScrolledWindow()
+        swnd.add(trvw)
+        Enr = len(E)
+        swnd.set_size_request(160 * 2, 30 * Enr)
+        dlg.vbox.pack_start(swnd, True, True, 0)
+        dlg.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
+        dlg.add_button(Gtk.STOCK_OK, Gtk.ResponseType.OK)
+        dlg.show_all()
+        response = dlg.run()
+        dlg.hide()
+
+        if response == Gtk.ResponseType.OK:
+            print "ok"
+        else:
+            print "cancel"
+
+    def on_changed(self, selection):
+        """ get the model and the iterator that points at the data in the model"""
+        (model, iter) = selection.get_selected()
+        #print "\n %s %s %s" %(model[iter][0],  model[iter][1], model[iter][2])
 
     def on_button_toggled(self, button, name):
         self.update_trvw()
