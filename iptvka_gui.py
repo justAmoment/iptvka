@@ -131,9 +131,14 @@ class iptvkaWindow(Gtk.Window):
         dlg = Gtk.Dialog("Edit row %s" % self.iptvka.lsts[row][0], self)
         E = Gtk.ListStore(str, str)
         trvw = Gtk.TreeView(model=E)
-        column = Gtk.TreeViewColumn("name", Gtk.CellRendererText(), text=0)
+        cr = Gtk.CellRendererText()
+        cr.set_property('editable', False)
+        column = Gtk.TreeViewColumn("name", cr, text=0)
         trvw.append_column(column)
-        column = Gtk.TreeViewColumn("value", Gtk.CellRendererText(), text=1)
+        cr = Gtk.CellRendererText()
+        cr.set_property('editable', True)
+        cr.connect('edited', self.on_edited_e, E)
+        column = Gtk.TreeViewColumn("value", cr, text=1)
         trvw.append_column(column)
         for x_col in range(len(x_title)):
             xc = x_title[x_col]
@@ -150,9 +155,20 @@ class iptvkaWindow(Gtk.Window):
         dlg.hide()
 
         if response == Gtk.ResponseType.OK:
-            print "ok"
+            for x_col in range(len(x_title)):
+                xc = x_title[x_col]
+                L[row][x_col] = E[x_col][1]
         else:
-            print "cancel"
+            pass
+
+    def on_edited_e( self, cell, path, new_text, model ):
+        """
+        Called when a text cell is edited.  It puts the new text
+        in the model so that it is displayed properly.
+        """
+        #print "Change '%s' to '%s'" % (model[path][1], new_text)
+        model[path][1] = new_text
+        #return
 
     def on_changed(self, selection):
         """ get the model and the iterator that points at the data in the model"""
