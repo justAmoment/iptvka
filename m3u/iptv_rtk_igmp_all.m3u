@@ -19,7 +19,7 @@ udp://@233.3.2.8:5000
 udp://@233.3.2.9:5000
 #EXTINF:-1, 10 -- ТВ Центр
 udp://@233.3.2.10:5000
-#EXTINF:-1, 11 -- ТВ3
+#EXTINF:-1, 11 -- ТВ3 test
 udp://@233.3.2.11:5000
 #EXTINF:-1, 12 -- Петербург 5 канал
 udp://@233.3.2.12:5000
@@ -291,6 +291,7 @@ udp://@233.7.70.156:5000
 #EXTINF:-1, 157 -- HD Life {HD}
 udp://@233.7.70.157:5000
 #EXTINF:-1, 158 -- Fox Life HD {HD} {cinema} {fav1}
+#EXTVLCOPT:network-caching=10000
 udp://@233.7.70.158:5000
 #EXTINF:-1, 159 -- National Geographic HD {HD}
 udp://@233.7.70.159:5000
@@ -327,7 +328,7 @@ udp://@233.7.70.181:5000
 udp://@233.7.70.182:5000
 #EXTINF:-1, 183 -- AB Moteurs {sport}
 udp://@233.7.70.183:5000
-#EXTINF:-1, 184 -- AXN Sci-Fi {cinema} {fav1}
+#EXTINF:-1, 184 -- SONY Sci-Fi {cinema} {fav1}
 udp://@233.7.70.184:5000
 #EXTINF:-1, 185 -- BBC Entertainment
 udp://@233.7.70.185:5000
